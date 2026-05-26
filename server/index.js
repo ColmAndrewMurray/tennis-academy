@@ -52,6 +52,7 @@ app.use(express.json());
 app.use('/api/availability',             require('./routes/availability'));
 app.use('/api/create-checkout-session',  require('./routes/checkout'));
 app.use('/api/webhook',                  require('./routes/webhook'));
+app.use('/api/admin',                    require('./routes/admin'));
 
 // ── Health check ──────────────────────────────────────────────────────────
 app.get('/api/health', (_req, res) => res.json({ status: 'ok' }));

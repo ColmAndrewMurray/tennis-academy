@@ -17,9 +17,9 @@
     #ta-bw a{color:var(--ta-navy)}
     #ta-bw .ta-container{width:100%;max-width:720px;margin:0 auto;padding:0 16px}
     #ta-bw .ta-header{background:var(--ta-navy);color:var(--ta-white);padding:20px 0;text-align:center;box-shadow:var(--ta-shadow)}
-    #ta-bw .ta-logo-row{display:flex;align-items:center;justify-content:center;gap:12px}
-    #ta-bw .ta-logo-icon{font-size:2rem}
-    #ta-bw .ta-header h1{font-size:1.5rem;font-weight:700;letter-spacing:-.01em;color:var(--ta-white)}
+    #ta-bw .ta-logo-row{display:flex !important;align-items:center !important;justify-content:center !important;gap:12px !important}
+    #ta-bw .ta-logo-icon{font-size:2rem !important;line-height:1 !important}
+    #ta-bw .ta-header h1{font-size:1.5rem !important;font-weight:700 !important;letter-spacing:-.01em !important;color:var(--ta-white) !important;margin:0 !important;padding:0 !important;line-height:1.2 !important}
     #ta-bw .ta-tagline{font-size:.85rem;color:rgba(255,255,255,.7);margin-top:4px}
     #ta-bw .ta-main{padding:28px 0 48px}
     #ta-bw .ta-card{background:var(--ta-white);border-radius:var(--ta-radius);box-shadow:var(--ta-shadow);padding:24px;margin-bottom:20px;border:1px solid var(--ta-grey-200)}
@@ -112,8 +112,9 @@
   </div>
 
   <script type="text/babel">
-    // ─── CONFIG — change this to your live server URL when deploying ───────────
+    // ─── CONFIG ────────────────────────────────────────────────────────────────
     const TENNIS_API_URL = 'https://tennis-academy-dzrw.onrender.com';
+    const ADMIN_SECRET   = 'edOulgm-z_dULoVY910MV_dk0n7za-H0';
 
     // ─── React globals ─────────────────────────────────────────────────────────
     const { useState, useEffect, useCallback } = React;
@@ -725,6 +726,16 @@
 
           <footer className="ta-footer">
             <p>Tennis Academy &copy; {new Date().getFullYear()} · 10-month season · September to June</p>
+            {new URLSearchParams(window.location.search).get('admin') === '1' && (
+              <div style={{ marginTop:12 }}>
+                <a
+                  href={`${TENNIS_API_URL}/api/admin/export?key=${ADMIN_SECRET}`}
+                  style={{ background:'#c9963a', color:'#fff', padding:'8px 18px', borderRadius:6, fontSize:'.8rem', fontWeight:700, textDecoration:'none' }}
+                >
+                  ⬇ Export Bookings CSV
+                </a>
+              </div>
+            )}
           </footer>
         </div>
       );
