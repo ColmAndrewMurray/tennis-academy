@@ -13,5 +13,4 @@ services:
       - key: STRIPE_WEBHOOK_SECRET
         sync: false          # set after registering the webhook in Stripe
       - key: ALLOWED_ORIGINS
-        sync: false          # comma-separated list of your Duda site origin(s)
-                             # e.g. https://mysite.multiscreensite.com,https://myacademy.ie
+        value: https://tennis4kids.multiscreensite.com
