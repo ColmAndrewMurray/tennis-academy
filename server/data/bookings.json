@@ -1,0 +1,28 @@
+{
+  "Clontarf": {
+    "Junior and Senior Infants": {
+      "clontarf-jsi-mon": 0,
+      "clontarf-jsi-tue": 0,
+      "clontarf-jsi-wed": 0,
+      "clontarf-jsi-fri": 0
+    },
+    "First and Second Class": {
+      "clontarf-12-mon": 0,
+      "clontarf-12-tue": 0,
+      "clontarf-12-wed": 0,
+      "clontarf-12-fri": 0
+    },
+    "Third and Fourth Class": {
+      "clontarf-34-mon": 0,
+      "clontarf-34-tue": 0,
+      "clontarf-34-wed": 0,
+      "clontarf-34-fri": 0
+    },
+    "Fifth and Sixth Class": {
+      "clontarf-56-mon": 0,
+      "clontarf-56-tue": 0,
+      "clontarf-56-wed": 0,
+      "clontarf-56-fri": 0
+    }
+  }
+}
