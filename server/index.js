@@ -15,10 +15,18 @@ const app  = express();
 const PORT = process.env.PORT || 3001;
 
 // ── CORS ──────────────────────────────────────────────────────────────────
-// Allow requests from the Vite dev server and production frontend.
+// ALLOWED_ORIGINS is a comma-separated list of permitted origins, e.g.:
+//   https://mysite.multiscreensite.com,https://myacademy.ie
+const extraOrigins = (process.env.ALLOWED_ORIGINS || '')
+  .split(',')
+  .map((o) => o.trim())
+  .filter(Boolean);
+
 const allowedOrigins = [
-  process.env.FRONTEND_URL || 'http://localhost:5173',
-  'http://localhost:4173', // Vite preview
+  ...extraOrigins,
+  'http://localhost:5173',
+  'http://localhost:4173',
+  'http://localhost:3001',
 ];
 
 app.use(

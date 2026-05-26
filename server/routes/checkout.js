@@ -32,6 +32,16 @@ const {
 
 const BOOKINGS_PATH = path.join(__dirname, '../data/bookings.json');
 
+function isSafeUrl(url) {
+  if (!url || typeof url !== 'string') return false;
+  try {
+    const { protocol, hostname } = new URL(url);
+    return protocol === 'https:' || hostname === 'localhost';
+  } catch {
+    return false;
+  }
+}
+
 function readBookings() {
   try {
     return JSON.parse(fs.readFileSync(BOOKINGS_PATH, 'utf8'));
@@ -100,7 +110,7 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ errors });
     }
 
-    const { parent, venue, children } = req.body;
+    const { parent, venue, children, successUrl, cancelUrl } = req.body;
 
     // 2. Check venue exists
     if (!SCHEDULE.hasOwnProperty(venue)) {
@@ -182,8 +192,14 @@ router.post('/', async (req, res) => {
         // the Stripe webhook after payment succeeds (see routes/webhook.js).
       },
       metadata,
-      success_url: `${process.env.FRONTEND_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url:  `${process.env.FRONTEND_URL}/cancel`,
+      // Prefer URLs sent by the client (supports Duda embeds where the page
+      // URL isn't known at deploy time). Fall back to FRONTEND_URL env var.
+      success_url: isSafeUrl(successUrl)
+        ? successUrl
+        : `${process.env.FRONTEND_URL}?ta_success=1&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: isSafeUrl(cancelUrl)
+        ? cancelUrl
+        : `${process.env.FRONTEND_URL}?ta_cancelled=1`,
       payment_method_types: ['card'],
     });
 

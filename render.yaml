@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: tennis-academy-api
+    runtime: node
+    rootDir: server
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: STRIPE_SECRET_KEY
+        sync: false          # set manually in Render dashboard
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false          # set after registering the webhook in Stripe
+      - key: ALLOWED_ORIGINS
+        sync: false          # comma-separated list of your Duda site origin(s)
+                             # e.g. https://mysite.multiscreensite.com,https://myacademy.ie
