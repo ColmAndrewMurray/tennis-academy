@@ -30,7 +30,9 @@ const {
   getSlotCapacity,
 } = require('../config/academyConfig');
 
-const BOOKINGS_PATH = path.join(__dirname, '../data/bookings.json');
+const BOOKINGS_PATH = process.env.NODE_ENV === 'production'
+  ? '/data/bookings.json'
+  : path.join(__dirname, '../data/bookings.json');
 
 function isSafeUrl(url) {
   if (!url || typeof url !== 'string') return false;

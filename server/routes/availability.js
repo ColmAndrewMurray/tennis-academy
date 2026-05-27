@@ -23,7 +23,9 @@ const fs = require('fs');
 const path = require('path');
 const { SCHEDULE, getSlotCapacity } = require('../config/academyConfig');
 
-const BOOKINGS_PATH = path.join(__dirname, '../data/bookings.json');
+const BOOKINGS_PATH = process.env.NODE_ENV === 'production'
+  ? '/data/bookings.json'
+  : path.join(__dirname, '../data/bookings.json');
 
 function readBookings() {
   try {
