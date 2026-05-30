@@ -44,7 +44,7 @@ const FRONTEND_URL  = process.env.FRONTEND_URL  || `http://localhost:${PORT}`;
 const STRIPE_SECRET = process.env.STRIPE_SECRET_KEY    || '';
 const WEBHOOK_SECRET= process.env.STRIPE_WEBHOOK_SECRET || '';
 
-const { SCHEDULE, calculateOrder, findSlot, getSlotCapacity, MONTHS } =
+const { SCHEDULE, calculateOrder, calculateUpfrontOrder, findSlot, getSlotCapacity, MONTHS, EARLY_BIRD_CUTOFF } =
   require('./config/academyConfig');
 
 const BOOKINGS_PATH = path.join(__dirname, 'data', 'bookings.json');
@@ -258,24 +258,47 @@ async function handleCreateCheckout(req, res) {
     }
   }
 
-  // Pricing (source of truth — never from the browser)
-  const order = calculateOrder(children);
-  const { tier, monthlyTotal, orderTotal } = order;
-  if (monthlyTotal === 0)
-    return sendJson(res, 400, { errors: ['Order total is zero.'] });
+  // Payment type: 'monthly' (default) or 'upfront' (early bird full payment)
+  const paymentType = body.paymentType === 'upfront' ? 'upfront' : 'monthly';
 
-  // Build metadata
+  // Pricing — source of truth on the server, never trusted from the browser
+  let order;
+  if (paymentType === 'upfront') {
+    if (new Date() > EARLY_BIRD_CUTOFF) {
+      return sendJson(res, 400, { errors: ['The upfront early bird offer has expired.'] });
+    }
+    order = calculateUpfrontOrder(children);
+    if (!order) {
+      return sendJson(res, 400, { errors: ['Upfront pricing is no longer available.'] });
+    }
+    if (order.orderTotal === 0) {
+      return sendJson(res, 400, { errors: ['Order total is zero.'] });
+    }
+  } else {
+    order = calculateOrder(children);
+    if (order.monthlyTotal === 0) {
+      return sendJson(res, 400, { errors: ['Order total is zero.'] });
+    }
+  }
+
+  const { tier, orderTotal } = order;
+  const monthlyTotal = paymentType === 'monthly' ? order.monthlyTotal : null;
+
+  // Build metadata (used by webhook to update slot bookings)
   const meta = {
     venue,
+    payment_type:        paymentType,
     parent_name:         parent.name.slice(0, 200),
     parent_email:        parent.email.slice(0, 200),
     parent_phone:        parent.phone.slice(0, 50),
     pricing_tier:        tier,
     child_count:         String(children.length),
     order_total_cents:   String(orderTotal),
-    monthly_total_cents: String(monthlyTotal),
-    months:              String(MONTHS),
   };
+  if (paymentType === 'monthly') {
+    meta.monthly_total_cents = String(monthlyTotal);
+    meta.months              = String(MONTHS);
+  }
   children.forEach((child, i) => {
     const n    = i + 1;
     const slot = findSlot(venue, child.classGroup, child.slotId);
@@ -294,35 +317,62 @@ async function handleCreateCheckout(req, res) {
   }
 
   try {
-    const childNames  = children.map(c => c.firstName).join(', ');
-    const description = `${venue} Tennis Academy · ${childNames} · ${tier === 'earlyBird' ? 'Early Bird' : 'Standard'} · ${MONTHS} months`;
+    const childNames = children.map(c => c.firstName).join(', ');
 
-    // Flatten metadata into Stripe's bracket notation
-    const metaFlat = {};
-    for (const [k, v] of Object.entries(meta)) {
-      metaFlat[`metadata[${k}]`]                    = v;
-      metaFlat[`subscription_data[metadata][${k}]`] = v;
+    if (paymentType === 'upfront') {
+      // One-time full payment — no subscription
+      const description = `${venue} Tennis Academy · ${childNames} · Upfront Early Bird · Full Season`;
+
+      const metaFlat = {};
+      for (const [k, v] of Object.entries(meta)) {
+        metaFlat[`metadata[${k}]`] = v;
+      }
+
+      const session = await stripeRequest('POST', 'checkout/sessions', {
+        mode:           'payment',
+        customer_email: parent.email,
+        'line_items[0][price_data][currency]':                  'eur',
+        'line_items[0][price_data][unit_amount]':               String(orderTotal),
+        'line_items[0][price_data][product_data][name]':        `${venue} Tennis Academy — Full Season Payment`,
+        'line_items[0][price_data][product_data][description]': description,
+        'line_items[0][quantity]':                              '1',
+        success_url: body.successUrl || `${FRONTEND_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url:  body.cancelUrl  || `${FRONTEND_URL}/cancel`,
+        'payment_method_types[0]': 'card',
+        ...metaFlat,
+      });
+
+      sendJson(res, 200, { url: session.url });
+
+    } else {
+      // Monthly subscription
+      const description = `${venue} Tennis Academy · ${childNames} · ${tier === 'earlyBird' ? 'Early Bird' : 'Standard'} · ${MONTHS} months`;
+
+      const metaFlat = {};
+      for (const [k, v] of Object.entries(meta)) {
+        metaFlat[`metadata[${k}]`]                    = v;
+        metaFlat[`subscription_data[metadata][${k}]`] = v;
+      }
+
+      const session = await stripeRequest('POST', 'checkout/sessions', {
+        mode:            'subscription',
+        customer_email:  parent.email,
+        'line_items[0][price_data][currency]':                  'eur',
+        'line_items[0][price_data][unit_amount]':               String(monthlyTotal),
+        'line_items[0][price_data][recurring][interval]':       'month',
+        'line_items[0][price_data][product_data][name]':        `${venue} Tennis Academy — Monthly Fee`,
+        'line_items[0][price_data][product_data][description]': description,
+        'line_items[0][quantity]':                              '1',
+        // Use successUrl/cancelUrl from the request body when provided (e.g. Duda widget).
+        // Falls back to the server's own FRONTEND_URL for the standalone app.
+        success_url: body.successUrl || `${FRONTEND_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url:  body.cancelUrl  || `${FRONTEND_URL}/cancel`,
+        'payment_method_types[0]': 'card',
+        ...metaFlat,
+      });
+
+      sendJson(res, 200, { url: session.url });
     }
-
-    const session = await stripeRequest('POST', 'checkout/sessions', {
-      mode:            'subscription',
-      customer_email:  parent.email,
-      'line_items[0][price_data][currency]':                    'eur',
-      'line_items[0][price_data][unit_amount]':                  String(monthlyTotal),
-      'line_items[0][price_data][recurring][interval]':         'month',
-      'line_items[0][price_data][product_data][name]':          `${venue} Tennis Academy — Monthly Fee`,
-      'line_items[0][price_data][product_data][description]':   description,
-      'line_items[0][quantity]':                                 '1',
-      // Use successUrl/cancelUrl from the request body when provided (e.g. Duda widget).
-      // This allows Stripe to redirect back to whatever page the widget is embedded on.
-      // Falls back to the server's own FRONTEND_URL for the standalone app.
-      success_url: body.successUrl || `${FRONTEND_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url:  body.cancelUrl  || `${FRONTEND_URL}/cancel`,
-      'payment_method_types[0]': 'card',
-      ...metaFlat,
-    });
-
-    sendJson(res, 200, { url: session.url });
   } catch (err) {
     console.error('Stripe error:', err.message);
     sendJson(res, 500, { errors: [err.message || 'Payment setup failed.'] });

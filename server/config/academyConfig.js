@@ -20,6 +20,8 @@ const EARLY_BIRD_CUTOFF = new Date('2026-08-01T23:59:59');
 
 // ─── Pricing (in euro CENTS for Stripe) ───────────────────────────────────
 // Total season fee per child — divide by MONTHS for the monthly amount.
+// upfrontEarlyBird: discounted rate for paying the full season fee in one go,
+// available only while the early bird window is open (before EARLY_BIRD_CUTOFF).
 const PRICING = {
   earlyBird: {
     child1: 61500, // €615.00 total
@@ -29,6 +31,11 @@ const PRICING = {
   standard: {
     child1: 64000, // €640.00 total
     child2: 61500, // €615.00 total
+    child3: 0,     // FREE
+  },
+  upfrontEarlyBird: {
+    child1: 58900, // €589.00 one-time
+    child2: 58900, // €589.00 one-time
     child3: 0,     // FREE
   },
 };
@@ -121,7 +128,7 @@ function findSlot(venue, classGroup, slotId) {
 }
 
 /**
- * Calculates the full order pricing for an array of children.
+ * Calculates the full order pricing for an array of children (monthly subscription).
  * Returns { tier, children: [{...child, seasonTotal, monthlyAmount}], orderTotal, monthlyTotal }
  * All amounts in cents.
  */
@@ -137,6 +144,24 @@ function calculateOrder(children, now = new Date()) {
   return { tier, children: priced, orderTotal, monthlyTotal, months: MONTHS };
 }
 
+/**
+ * Calculates the upfront early bird order (single one-time payment).
+ * Only valid before EARLY_BIRD_CUTOFF. Returns null if called after cutoff.
+ * Returns { tier, children: [{...child, seasonTotal}], orderTotal }
+ * All amounts in cents.
+ */
+function calculateUpfrontOrder(children, now = new Date()) {
+  if (now > EARLY_BIRD_CUTOFF) return null;
+  const tier = 'upfrontEarlyBird';
+  const priced = children.map((child, i) => {
+    const key = `child${Math.min(i + 1, 3)}`;
+    const seasonTotal = PRICING[tier][key];
+    return { ...child, seasonTotal };
+  });
+  const orderTotal = priced.reduce((sum, c) => sum + c.seasonTotal, 0);
+  return { tier, children: priced, orderTotal };
+}
+
 module.exports = {
   MONTHS,
   EARLY_BIRD_CUTOFF,
@@ -149,4 +174,5 @@ module.exports = {
   getSlotCapacity,
   findSlot,
   calculateOrder,
+  calculateUpfrontOrder,
 };

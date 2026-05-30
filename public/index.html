@@ -9,8 +9,6 @@
   <!-- CDN: React 18 (UMD) -->
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <!-- CDN: React Router DOM 6 (UMD) -->
-  <script src="https://unpkg.com/react-router-dom@6/dist/umd/react-router-dom.production.min.js"></script>
   <!-- CDN: Babel (transpiles JSX in the browser — no build step needed) -->
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
@@ -118,7 +116,28 @@
   <script type="text/babel">
     // ─── Globals from CDN scripts ────────────────────────────────────────────
     const { useState, useEffect, useCallback } = React;
-    const { BrowserRouter, Routes, Route, Link } = ReactRouterDOM;
+
+    // Simple client-side router (replaces React Router)
+    function usePathname() {
+      const [path, setPath] = useState(window.location.pathname);
+      useEffect(() => {
+        const handler = () => setPath(window.location.pathname);
+        window.addEventListener('popstate', handler);
+        return () => window.removeEventListener('popstate', handler);
+      }, []);
+      return path;
+    }
+    function navigate(to) {
+      window.history.pushState(null, '', to);
+      window.dispatchEvent(new PopStateEvent('popstate'));
+    }
+    function Link({ to, className, children }) {
+      return (
+        <a href={to} className={className} onClick={e => { e.preventDefault(); navigate(to); }}>
+          {children}
+        </a>
+      );
+    }
 
     // ─── Academy Config ──────────────────────────────────────────────────────
     const MONTHS = 10;
@@ -134,6 +153,11 @@
         child1: { total: 640,  monthly: 64.00 },
         child2: { total: 615,  monthly: 61.50 },
         child3: { total: 0,    monthly: 0 },
+      },
+      upfrontEarlyBird: {
+        child1: { total: 589,  monthly: null },
+        child2: { total: 589,  monthly: null },
+        child3: { total: 0,    monthly: null },
       },
     };
 
@@ -184,6 +208,75 @@
     function getChildDisplayPrice(index, tier) {
       const key = `child${Math.min(index, 3)}`;
       return PRICING_DISPLAY[tier][key];
+    }
+
+    // ─── PaymentTypeSelector ─────────────────────────────────────────────────
+    // Shown only during the early bird window. Lets parents choose between
+    // paying monthly or paying the full season fee upfront at a lower rate.
+    function PaymentTypeSelector({ paymentType, onChange, pricingTier }) {
+      const isEarlyBird = pricingTier === 'earlyBird';
+      if (!isEarlyBird) return null; // upfront option only available pre-cutoff
+
+      const opts = [
+        {
+          value: 'upfront',
+          icon: '💰',
+          title: 'Pay in Full',
+          desc: '€589 one-time payment per child',
+          detail: 'Save €26 vs monthly — early bird only',
+          highlight: true,
+        },
+        {
+          value: 'monthly',
+          icon: '📅',
+          title: 'Monthly Payments',
+          desc: '10 monthly payments of €61.50',
+          detail: '€615 total for first child',
+        },
+      ];
+
+      return (
+        <div className="card">
+          <div className="card-title">
+            <span className="step-badge">1</span>
+            Payment Option
+          </div>
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12 }}>
+            {opts.map(opt => {
+              const selected = paymentType === opt.value;
+              return (
+                <label key={opt.value} style={{
+                  display:'flex', flexDirection:'column', gap:6,
+                  padding:'16px 14px',
+                  border: selected ? '2px solid var(--navy)' : '1.5px solid var(--grey-200)',
+                  borderRadius:'var(--radius-sm)',
+                  cursor:'pointer',
+                  background: selected ? 'var(--navy-light)' : opt.highlight ? 'var(--gold-light)' : 'var(--white)',
+                  boxShadow: selected ? '0 0 0 2px rgba(10,31,68,.12)' : 'none',
+                  transition:'all var(--transition)',
+                }}>
+                  <input type="radio" name="paymentType" value={opt.value}
+                    checked={selected} onChange={() => onChange(opt.value)}
+                    style={{ position:'absolute', opacity:0, width:0, height:0 }} />
+                  <span style={{ fontSize:'1.4rem' }}>{opt.icon}</span>
+                  <span style={{ fontWeight:700, color:'var(--navy)', fontSize:'.95rem' }}>{opt.title}</span>
+                  <span style={{ fontSize:'.85rem', color:'var(--grey-800)', fontWeight:600 }}>{opt.desc}</span>
+                  <span style={{ fontSize:'.78rem', color: opt.highlight ? 'var(--gold-dark)' : 'var(--grey-600)' }}>{opt.detail}</span>
+                </label>
+              );
+            })}
+          </div>
+          {paymentType === 'upfront' && (
+            <div className="alert alert-info" style={{ marginTop:14, marginBottom:0 }}>
+              <span>🌟</span>
+              <span>
+                <strong>Early Bird Full Payment</strong> — pay €589 per child (3rd child free) in a single payment today.
+                Available until <strong>1 August 2026</strong>.
+              </span>
+            </div>
+          )}
+        </div>
+      );
     }
 
     function getSlotLabel(venue, classGroup, slotId) {
@@ -253,8 +346,10 @@
             <div style={{ display:'flex', alignItems:'center', gap:12 }}>
               {!isFree && displayPrice && (
                 <div className="price-tag">
-                  <strong>€{displayPrice.monthly.toFixed(2)}/mo</strong>
-                  <span>€{displayPrice.total} total</span>
+                  {displayPrice.monthly !== null
+                    ? <><strong>€{displayPrice.monthly.toFixed(2)}/mo</strong><span>€{displayPrice.total} total</span></>
+                    : <strong>€{displayPrice.total} upfront</strong>
+                  }
                 </div>
               )}
               {canRemove && (
@@ -345,10 +440,15 @@
     }
 
     // ─── OrderSummary ────────────────────────────────────────────────────────
-    function OrderSummary({ parent, venue, children, pricingTier }) {
+    function OrderSummary({ parent, venue, children, pricingTier, paymentType }) {
       if (!children.length) return null;
+      const isUpfront   = paymentType === 'upfront';
+      const displayTier = isUpfront ? 'upfrontEarlyBird' : pricingTier;
       const isEarlyBird = pricingTier === 'earlyBird';
       let totalEur = 0, monthlyEur = 0;
+
+      const tierLabel = isUpfront ? '💰 Pay in Full' : isEarlyBird ? '🌟 Early Bird' : 'Standard';
+      const tierBg    = isUpfront ? 'var(--gold)' : isEarlyBird ? 'var(--gold)' : 'rgba(255,255,255,.2)';
 
       return (
         <div className="summary-card">
@@ -367,44 +467,60 @@
           <div className="summary-section">
             <div className="summary-label">Pricing</div>
             <div className="summary-value">
-              <span style={{ background: isEarlyBird ? '#c9963a' : 'rgba(255,255,255,.2)', color:'#fff', fontSize:'.75rem', fontWeight:700, padding:'2px 8px', borderRadius:20 }}>
-                {isEarlyBird ? '🌟 Early Bird' : 'Standard'}
+              <span style={{ background: tierBg, color:'#fff', fontSize:'.75rem', fontWeight:700, padding:'2px 8px', borderRadius:20 }}>
+                {tierLabel}
               </span>
-              {isEarlyBird && <span style={{ fontSize:'.78rem', opacity:.6, marginLeft:8 }}>Valid until 1 Aug</span>}
+              {isUpfront && <span style={{ fontSize:'.78rem', opacity:.6, marginLeft:8 }}>One-time full payment</span>}
+              {!isUpfront && isEarlyBird && <span style={{ fontSize:'.78rem', opacity:.6, marginLeft:8 }}>Valid until 1 Aug</span>}
             </div>
           </div>
           <hr className="summary-divider" />
           {children.map((child, i) => {
             const n      = i + 1;
             const isFree = n === 3;
-            const price  = getChildDisplayPrice(n, pricingTier);
+            const price  = getChildDisplayPrice(n, displayTier);
             const slot   = getSlotLabel(venue, child.classGroup, child.slotId);
-            if (!isFree) { totalEur += price.total; monthlyEur += price.monthly; }
+            if (!isFree) { totalEur += price.total; if (price.monthly !== null) monthlyEur += price.monthly; }
             return (
               <div className="summary-child" key={i}>
                 <div className="summary-child-header">
                   <span className="summary-child-name">{child.firstName || '—'} {child.lastName}</span>
                   <span className="summary-child-price">
-                    {isFree ? <span style={{ color:'#86efac' }}>FREE</span>
-                            : `€${price.monthly.toFixed(2)}/mo`}
+                    {isFree
+                      ? <span style={{ color:'#86efac' }}>FREE</span>
+                      : isUpfront
+                        ? `€${price.total}`
+                        : `€${price.monthly.toFixed(2)}/mo`}
                   </span>
                 </div>
                 <div className="summary-child-detail">{child.classGroup || '—'} · {slot}</div>
-                {!isFree && <div className="summary-child-detail" style={{ marginTop:2 }}>€{price.total} season total</div>}
+                {!isFree && !isUpfront && <div className="summary-child-detail" style={{ marginTop:2 }}>€{price.total} season total</div>}
               </div>
             );
           })}
           <hr className="summary-divider" />
-          <div className="summary-total-row">
-            <div>
-              <div className="summary-total-label">Monthly payment</div>
-              <div style={{ fontSize:'.75rem', color:'rgba(255,255,255,.4)', marginTop:2 }}>{MONTHS} payments · Sep – Jun</div>
+          {isUpfront ? (
+            <div className="summary-total-row">
+              <div>
+                <div className="summary-total-label">Total due today</div>
+                <div style={{ fontSize:'.75rem', color:'rgba(255,255,255,.4)', marginTop:2 }}>One-time payment · full season</div>
+              </div>
+              <div>
+                <div className="summary-total-amount">€{totalEur.toFixed(2)}</div>
+              </div>
             </div>
-            <div>
-              <div className="summary-total-amount">€{(Math.round(monthlyEur * 100) / 100).toFixed(2)}</div>
-              <div className="summary-monthly-note">Season total: €{totalEur.toFixed(2)}</div>
+          ) : (
+            <div className="summary-total-row">
+              <div>
+                <div className="summary-total-label">Monthly payment</div>
+                <div style={{ fontSize:'.75rem', color:'rgba(255,255,255,.4)', marginTop:2 }}>{MONTHS} payments · Sep – Jun</div>
+              </div>
+              <div>
+                <div className="summary-total-amount">€{(Math.round(monthlyEur * 100) / 100).toFixed(2)}</div>
+                <div className="summary-monthly-note">Season total: €{totalEur.toFixed(2)}</div>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       );
     }
@@ -423,6 +539,7 @@
       const [submitting,   setSubmitting]   = useState(false);
       const [apiErrors,    setApiErrors]    = useState([]);
       const [fieldErrors,  setFieldErrors]  = useState({});
+      const [paymentType,  setPaymentType]  = useState('monthly');
 
       const pricingTier = getPricingTier();
       const isEarlyBird = pricingTier === 'earlyBird';
@@ -486,7 +603,7 @@
           const res  = await fetch('/api/create-checkout-session', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ parent, venue, children }),
+            body: JSON.stringify({ parent, venue, children, paymentType }),
           });
           const data = await res.json();
           if (!res.ok) {
@@ -536,11 +653,9 @@
                 </span>
                 <p>
                   {isEarlyBird
-                    ? <span>Early bird rates apply until <strong>{cutoffStr}</strong>. Book now to save!</span>
-                    : <span>Standard rates apply after {cutoffStr}.</span>
+                    ? <span>Early bird rates apply until <strong>{cutoffStr}</strong>. Pay upfront before August 1 for only <strong>€589</strong> for each of the first two children and the third free, or pay over <strong>10 monthly payments</strong> — <strong>€615</strong> for the first child, <strong>€600</strong> for the second and the third child free.</span>
+                    : <span>Standard rates apply after {cutoffStr}. Season fee is <strong>€640</strong> for the first child, paid over <strong>10 monthly payments</strong>.</span>
                   }
-                  {' '}Season fee is <strong>€{isEarlyBird ? '615' : '640'}</strong> for the first child,
-                  paid over <strong>10 monthly payments</strong>.
                 </p>
               </div>
 
@@ -551,6 +666,8 @@
                     <div>{apiErrors.map((e, i) => <p key={i} style={{ margin:0 }}>{e}</p>)}</div>
                   </div>
                 )}
+
+                <PaymentTypeSelector paymentType={paymentType} onChange={setPaymentType} pricingTier={pricingTier} />
 
                 <ParentForm parent={parent} onChange={setParent} errors={fieldErrors.parent || {}} />
 
@@ -590,9 +707,10 @@
                       )}
                     </div>
                     {children.map((child, i) => {
-                      const n     = i + 1;
-                      const isFr  = n === 3;
-                      const dp    = isFr ? { total:0, monthly:0 } : getChildDisplayPrice(n, pricingTier);
+                      const n           = i + 1;
+                      const isFr        = n === 3;
+                      const displayTier = paymentType === 'upfront' ? 'upfrontEarlyBird' : pricingTier;
+                      const dp          = isFr ? { total:0, monthly:null } : getChildDisplayPrice(n, displayTier);
                       return (
                         <ChildForm key={i} index={i} child={child} venue={venue}
                           availability={availability} pricingTier={pricingTier} displayPrice={dp}
@@ -625,14 +743,17 @@
 
                 {formComplete && !hasFullSlot && (
                   <>
-                    <OrderSummary parent={parent} venue={venue} children={children} pricingTier={pricingTier} />
+                    <OrderSummary parent={parent} venue={venue} children={children} pricingTier={pricingTier} paymentType={paymentType} />
                     <div style={{ marginBottom:12 }}>
                       <div className="alert alert-info">
                         <span>🔒</span>
                         <span>
                           You'll be taken to <strong>Stripe's secure checkout</strong> to complete payment.
                           Your card details are never stored on our servers.
-                          You'll be charged monthly for <strong>{MONTHS} months</strong>.
+                          {paymentType === 'upfront'
+                            ? <> You'll be charged <strong>once</strong> for the full season.</>
+                            : <> You'll be charged monthly for <strong>{MONTHS} months</strong>.</>
+                          }
                         </span>
                       </div>
                     </div>
@@ -663,13 +784,25 @@
 
     // ─── SuccessPage ─────────────────────────────────────────────────────────
     function SuccessPage() {
+      // Detect payment type from the Stripe session if available — fall back to
+      // checking the URL param set by the server (not implemented yet), so we
+      // show a generic message that works for both cases.
+      const params      = new URLSearchParams(window.location.search);
+      const sessionId   = params.get('session_id') || '';
+      // We can't know the payment type from the session ID alone without an API
+      // call, so show both possibilities clearly.
       return (
         <div className="result-page">
           <div className="result-card">
             <div className="result-icon">🎉</div>
             <h1>You're all booked!</h1>
             <p>Thank you for registering with the Tennis Academy. Your payment was successful and your children are now enrolled for the season.</p>
-            <p>You'll be charged monthly for <strong>{MONTHS} months</strong> (September – June). Your subscription ends automatically after the final payment — no action needed.</p>
+            <p>
+              If you chose <strong>monthly payments</strong>, you'll be charged for {MONTHS} months (September – June) and your subscription ends automatically after the final payment — no action needed.
+            </p>
+            <p>
+              If you chose to <strong>pay in full</strong>, your one-time payment covers the entire season — nothing more to do.
+            </p>
             <p style={{ fontSize:'.875rem', marginTop:8 }}>A confirmation email will be sent to you shortly. If you have any questions, please get in touch.</p>
             <div className="action-row">
               <Link to="/" className="btn btn-primary">Back to Home</Link>
@@ -701,16 +834,10 @@
 
     // ─── App ─────────────────────────────────────────────────────────────────
     function App() {
-      return (
-        <BrowserRouter>
-          <Routes>
-            <Route path="/"        element={<BookingPage />} />
-            <Route path="/success" element={<SuccessPage />} />
-            <Route path="/cancel"  element={<CancelPage  />} />
-            <Route path="*"        element={<BookingPage />} />
-          </Routes>
-        </BrowserRouter>
-      );
+      const path = usePathname();
+      if (path === '/success') return <SuccessPage />;
+      if (path === '/cancel')  return <CancelPage />;
+      return <BookingPage />;
     }
 
     // ─── Render ───────────────────────────────────────────────────────────────
