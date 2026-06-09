@@ -112,7 +112,7 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ errors });
     }
 
-    const { parent, venue, children, successUrl, cancelUrl } = req.body;
+    const { parent, venue, children, paymentType, successUrl, cancelUrl } = req.body;
 
     // 2. Check venue exists
     if (!SCHEDULE.hasOwnProperty(venue)) {
@@ -170,40 +170,70 @@ router.post('/', async (req, res) => {
       `${venue} Tennis Academy · ${childNames} · ` +
       `${tier === 'earlyBird' ? 'Early Bird' : 'Standard'} · ${months} months`;
 
-    // 7. Create Stripe Checkout session (subscription mode)
-    const session = await stripe.checkout.sessions.create({
-      mode: 'subscription',
-      customer_email: parent.email,
-      line_items: [
-        {
-          price_data: {
-            currency: 'eur',
-            unit_amount: monthlyTotal,   // monthly charge in cents
-            recurring: { interval: 'month' },
-            product_data: {
-              name: `${venue} Tennis Academy — Monthly Fee`,
-              description: productDescription,
+    const resolvedSuccessUrl = isSafeUrl(successUrl)
+      ? successUrl
+      : `${process.env.FRONTEND_URL}?ta_success=1&session_id={CHECKOUT_SESSION_ID}`;
+    const resolvedCancelUrl = isSafeUrl(cancelUrl)
+      ? cancelUrl
+      : `${process.env.FRONTEND_URL}?ta_cancelled=1`;
+
+    // 7. Create Stripe Checkout session
+    let sessionParams;
+    if (paymentType === 'full') {
+      // One-time payment for full season
+      sessionParams = {
+        mode: 'payment',
+        customer_email: parent.email,
+        line_items: [
+          {
+            price_data: {
+              currency: 'eur',
+              unit_amount: orderTotal,
+              product_data: {
+                name: `${venue} Tennis Academy — Full Season`,
+                description: productDescription,
+              },
             },
+            quantity: 1,
           },
-          quantity: 1,
-        },
-      ],
-      subscription_data: {
+        ],
         metadata,
-        // NOTE: The subscription is converted to a 10-month schedule via
-        // the Stripe webhook after payment succeeds (see routes/webhook.js).
-      },
-      metadata,
-      // Prefer URLs sent by the client (supports Duda embeds where the page
-      // URL isn't known at deploy time). Fall back to FRONTEND_URL env var.
-      success_url: isSafeUrl(successUrl)
-        ? successUrl
-        : `${process.env.FRONTEND_URL}?ta_success=1&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: isSafeUrl(cancelUrl)
-        ? cancelUrl
-        : `${process.env.FRONTEND_URL}?ta_cancelled=1`,
-      payment_method_types: ['card'],
-    });
+        success_url: resolvedSuccessUrl,
+        cancel_url: resolvedCancelUrl,
+        payment_method_types: ['card'],
+      };
+    } else {
+      // Monthly subscription
+      sessionParams = {
+        mode: 'subscription',
+        customer_email: parent.email,
+        line_items: [
+          {
+            price_data: {
+              currency: 'eur',
+              unit_amount: monthlyTotal,
+              recurring: { interval: 'month' },
+              product_data: {
+                name: `${venue} Tennis Academy — Monthly Fee`,
+                description: productDescription,
+              },
+            },
+            quantity: 1,
+          },
+        ],
+        subscription_data: {
+          metadata,
+          // NOTE: The subscription is converted to a 10-month schedule via
+          // the Stripe webhook after payment succeeds (see routes/webhook.js).
+        },
+        metadata,
+        success_url: resolvedSuccessUrl,
+        cancel_url: resolvedCancelUrl,
+        payment_method_types: ['card'],
+      };
+    }
+
+    const session = await stripe.checkout.sessions.create(sessionParams);
 
     res.json({ url: session.url });
 
