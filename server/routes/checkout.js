@@ -179,7 +179,7 @@ router.post('/', async (req, res) => {
 
     // 7. Create Stripe Checkout session
     let sessionParams;
-    if (paymentType === 'full') {
+    if (paymentType === 'full' || paymentType === 'upfront') {
       // One-time payment for full season
       sessionParams = {
         mode: 'payment',
