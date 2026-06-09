@@ -26,6 +26,7 @@ const path = require('path');
 const {
   SCHEDULE,
   calculateOrder,
+  calculateUpfrontOrder,
   findSlot,
   getSlotCapacity,
 } = require('../config/academyConfig');
@@ -129,7 +130,8 @@ router.post('/', async (req, res) => {
     }
 
     // 4. Calculate pricing on the server (source of truth)
-    const order = calculateOrder(children);
+    const isUpfront = paymentType === 'upfront' || paymentType === 'full';
+    const order = isUpfront ? calculateUpfrontOrder(children) : calculateOrder(children);
     const { tier, monthlyTotal, orderTotal, months } = order;
 
     if (monthlyTotal === 0) {
@@ -179,7 +181,7 @@ router.post('/', async (req, res) => {
 
     // 7. Create Stripe Checkout session
     let sessionParams;
-    if (paymentType === 'full' || paymentType === 'upfront') {
+    if (isUpfront) {
       // One-time payment for full season
       sessionParams = {
         mode: 'payment',
