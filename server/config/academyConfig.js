@@ -30,7 +30,7 @@ const PRICING = {
   },
   standard: {
     child1: 64000, // €640.00 total
-    child2: 61500, // €615.00 total
+    child2: 62500, // €625.00 total
     child3: 0,     // FREE
   },
   upfrontEarlyBird: {
