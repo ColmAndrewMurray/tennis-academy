@@ -668,19 +668,15 @@ function BookingPage() {
   const [fieldErrors, setFieldErrors] = useState({});
   const [paymentType, setPaymentType] = useState('monthly');
   const [page, setPage] = useState(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('ta_success') === '1') return 'success';
-    if (params.get('ta_cancelled') === '1') return 'cancel';
+    const hash = window.location.hash;
+    if (hash === '#ta_success') return 'success';
+    if (hash === '#ta_cancelled') return 'cancel';
     return 'form';
   });
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.has('ta_success') || params.has('ta_cancelled') || params.has('session_id')) {
-      params.delete('ta_success');
-      params.delete('ta_cancelled');
-      params.delete('session_id');
-      const newUrl = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
-      window.history.replaceState({}, '', newUrl);
+    const hash = window.location.hash;
+    if (hash === '#ta_success' || hash === '#ta_cancelled') {
+      window.history.replaceState({}, '', window.location.pathname + window.location.search);
     }
   }, []);
   const pricingTier = getPricingTier();
@@ -756,8 +752,8 @@ function BookingPage() {
     setSubmitting(true);
     try {
       const base = window.location.origin + window.location.pathname;
-      const successUrl = base + '?ta_success=1&session_id={CHECKOUT_SESSION_ID}';
-      const cancelUrl = base + '?ta_cancelled=1';
+      const successUrl = 'https://tennis-academy-dzrw.onrender.com/payment-success';
+      const cancelUrl = base;
       const res = await fetch(`${TENNIS_API_URL}/api/create-checkout-session`, {
         method: 'POST',
         headers: {

@@ -1,0 +1,794 @@
+<meta>
+
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+ <script crossorigin="" src="https://unpkg.com/react@18/umd/react.production.min.js">
+ </script>
+ <script crossorigin="" src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js">
+ </script>
+ <script src="https://unpkg.com/@babel/standalone/babel.min.js">
+ </script>
+ <style>
+#ta-bw *,#ta-bw *::before,#ta-bw *::after{box-sizing:border-box;margin:0;padding:0}
+#ta-bw{--ta-navy:#0a1f44;--ta-navy-mid:#1a3360;--ta-navy-light:#e8edf5;--ta-gold:#c9963a;--ta-gold-dark:#a87a2a;--ta-gold-light:#fdf3e3;--ta-white:#ffffff;--ta-grey-50:#f8f9fc;--ta-grey-100:#f1f4f9;--ta-grey-200:#e2e6ef;--ta-grey-400:#94a3b8;--ta-grey-600:#475569;--ta-grey-800:#1e293b;--ta-red:#dc2626;--ta-red-bg:#fef2f2;--ta-green:#16a34a;--ta-green-bg:#f0fdf4;--ta-radius-sm:6px;--ta-radius:12px;--ta-radius-lg:18px;--ta-shadow-sm:0 1px 3px rgba(10,31,68,.08);--ta-shadow:0 4px 16px rgba(10,31,68,.10);--ta-shadow-lg:0 8px 32px rgba(10,31,68,.14);--ta-font:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;--ta-transition:.18s ease;font-family:var(--ta-font);color:var(--ta-grey-800);line-height:1.6;-webkit-font-smoothing:antialiased;background:var(--ta-grey-50)}
+#ta-bw a{color:var(--ta-navy)}
+#ta-bw .ta-container{width:100%;max-width:720px;margin:0 auto;padding:0 16px}
+#ta-bw .ta-header{background:var(--ta-navy);color:var(--ta-white);padding:20px 0;text-align:center;box-shadow:var(--ta-shadow)}
+#ta-bw .ta-logo-row{display:flex !important;align-items:center !important;justify-content:center !important;gap:12px !important}
+#ta-bw .ta-logo-icon{font-size:2rem !important;line-height:1 !important}
+#ta-bw .ta-header h1{font-size:1.5rem !important;font-weight:700 !important;letter-spacing:-.01em !important;color:var(--ta-white) !important;margin:0 !important;padding:0 !important;line-height:1.2 !important}
+#ta-bw .ta-tagline{font-size:.85rem;color:rgba(255,255,255,.7);margin-top:4px}
+#ta-bw .ta-main{padding:28px 0 48px}
+#ta-bw .ta-card{background:var(--ta-white);border-radius:var(--ta-radius);box-shadow:var(--ta-shadow);padding:24px;margin-bottom:20px;border:1px solid var(--ta-grey-200)}
+#ta-bw .ta-card-title{font-size:1rem;font-weight:700;color:var(--ta-navy);margin-bottom:18px;display:flex;align-items:center;gap:8px}
+#ta-bw .ta-step{background:var(--ta-navy);color:var(--ta-white);width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;flex-shrink:0}
+#ta-bw .ta-pricing-banner{background:var(--ta-gold-light);border:1.5px solid var(--ta-gold);border-radius:var(--ta-radius);padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+#ta-bw .ta-badge{background:var(--ta-gold);color:var(--ta-white);font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+#ta-bw .ta-badge-std{background:var(--ta-navy-mid)}
+#ta-bw .ta-pricing-banner p{font-size:.875rem;color:var(--ta-grey-600);margin:0}
+#ta-bw .ta-pricing-banner strong{color:var(--ta-grey-800)}
+#ta-bw .ta-form-group{margin-bottom:16px}
+#ta-bw .ta-label{display:block;font-size:.875rem;font-weight:600;color:var(--ta-grey-600);margin-bottom:6px;letter-spacing:.01em}
+#ta-bw .ta-req{color:var(--ta-red);margin-left:2px}
+#ta-bw .ta-ctrl{width:100%;padding:11px 14px;font-size:1rem;font-family:var(--ta-font);border:1.5px solid var(--ta-grey-200);border-radius:var(--ta-radius-sm);background:var(--ta-white);color:var(--ta-grey-800);transition:border-color var(--ta-transition),box-shadow var(--ta-transition);appearance:none;-webkit-appearance:none}
+#ta-bw .ta-ctrl:focus{outline:none;border-color:var(--ta-navy);box-shadow:0 0 0 3px rgba(10,31,68,.08)}
+#ta-bw .ta-ctrl:disabled{background:var(--ta-grey-100);color:var(--ta-grey-400);cursor:not-allowed}
+#ta-bw .ta-ctrl.ta-err{border-color:var(--ta-red)}
+#ta-bw select.ta-ctrl{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23475569' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;cursor:pointer}
+#ta-bw textarea.ta-ctrl{min-height:80px;resize:vertical}
+#ta-bw .ta-field-err{font-size:.8rem;color:var(--ta-red);margin-top:4px}
+#ta-bw .ta-form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#ta-bw .ta-slot-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#ta-bw .ta-slot-opt{position:relative}
+#ta-bw .ta-slot-opt input[type="radio"]{position:absolute;opacity:0;width:0;height:0}
+#ta-bw .ta-slot-lbl{display:flex;flex-direction:column;padding:12px 14px;border:1.5px solid var(--ta-grey-200);border-radius:var(--ta-radius-sm);cursor:pointer;transition:border-color var(--ta-transition),background var(--ta-transition);background:var(--ta-white);min-height:70px;justify-content:center}
+#ta-bw .ta-slot-lbl:hover:not(.ta-full){border-color:var(--ta-navy);background:var(--ta-navy-light)}
+#ta-bw .ta-slot-opt input:checked+.ta-slot-lbl{border-color:var(--ta-navy);background:var(--ta-navy-light);box-shadow:0 0 0 2px rgba(10,31,68,.15)}
+#ta-bw .ta-slot-lbl.ta-full{background:var(--ta-grey-100);border-color:var(--ta-grey-200);cursor:not-allowed;opacity:.65}
+#ta-bw .ta-slot-day{font-size:.95rem;font-weight:700;color:var(--ta-navy)}
+#ta-bw .ta-slot-time{font-size:.82rem;color:var(--ta-grey-600);margin-top:2px}
+#ta-bw .ta-slot-avail{font-size:.75rem;margin-top:5px;font-weight:600}
+#ta-bw .ta-avail-ok{color:var(--ta-green)}
+#ta-bw .ta-avail-low{color:var(--ta-gold-dark)}
+#ta-bw .ta-avail-full{color:var(--ta-red)}
+#ta-bw .ta-child-card{border:1.5px solid var(--ta-grey-200);border-radius:var(--ta-radius);padding:20px;margin-bottom:16px;background:var(--ta-white)}
+#ta-bw .ta-child-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+#ta-bw .ta-child-ttl{font-size:.95rem;font-weight:700;color:var(--ta-navy);display:flex;align-items:center;gap:8px}
+#ta-bw .ta-free-badge{background:var(--ta-green);color:var(--ta-white);font-size:.72rem;font-weight:700;padding:2px 9px;border-radius:20px;letter-spacing:.05em;text-transform:uppercase}
+#ta-bw .ta-price-tag{font-size:.85rem;color:var(--ta-grey-600);text-align:right}
+#ta-bw .ta-price-tag strong{display:block;font-size:1rem;color:var(--ta-navy)}
+#ta-bw .ta-remove-btn{background:none;border:none;color:var(--ta-grey-400);cursor:pointer;padding:4px;border-radius:4px;font-size:1.1rem;transition:color var(--ta-transition);line-height:1}
+#ta-bw .ta-remove-btn:hover{color:var(--ta-red)}
+#ta-bw .ta-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--ta-font);font-size:1rem;font-weight:600;border:none;border-radius:var(--ta-radius-sm);cursor:pointer;padding:12px 22px;transition:all var(--ta-transition);text-decoration:none;white-space:nowrap}
+#ta-bw .ta-btn:disabled{opacity:.45;cursor:not-allowed}
+#ta-bw .ta-btn-gold{background:var(--ta-gold);color:var(--ta-white);box-shadow:var(--ta-shadow-sm)}
+#ta-bw .ta-btn-gold:hover:not(:disabled){background:var(--ta-gold-dark);box-shadow:var(--ta-shadow);transform:translateY(-1px)}
+#ta-bw .ta-btn-outline{background:transparent;color:var(--ta-navy);border:1.5px solid var(--ta-navy)}
+#ta-bw .ta-btn-outline:hover:not(:disabled){background:var(--ta-navy-light)}
+#ta-bw .ta-btn-lg{font-size:1.1rem;padding:15px 28px}
+#ta-bw .ta-btn-full{width:100%}
+#ta-bw .ta-add-child-row{text-align:center;margin:4px 0 8px}
+#ta-bw .ta-summary{background:var(--ta-navy);color:var(--ta-white);border-radius:var(--ta-radius);padding:24px;margin-bottom:20px}
+#ta-bw .ta-summary h2{font-size:1.1rem;font-weight:700;margin-bottom:18px;color:var(--ta-white);display:flex;align-items:center;gap:8px}
+#ta-bw .ta-sum-sec{margin-bottom:16px}
+#ta-bw .ta-sum-lbl{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.55);margin-bottom:4px}
+#ta-bw .ta-sum-val{font-size:.9rem;color:rgba(255,255,255,.9)}
+#ta-bw .ta-sum-div{border:none;border-top:1px solid rgba(255,255,255,.12);margin:16px 0}
+#ta-bw .ta-sum-child{padding:12px 0;border-bottom:1px solid rgba(255,255,255,.1)}
+#ta-bw .ta-sum-child:last-child{border-bottom:none}
+#ta-bw .ta-sum-child-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+#ta-bw .ta-sum-child-name{font-weight:700;font-size:.95rem}
+#ta-bw .ta-sum-child-price{font-weight:700;color:var(--ta-gold)}
+#ta-bw .ta-sum-child-detail{font-size:.82rem;color:rgba(255,255,255,.65)}
+#ta-bw .ta-sum-total-row{display:flex;justify-content:space-between;align-items:center;padding:14px 0 0}
+#ta-bw .ta-sum-total-lbl{font-size:.9rem;color:rgba(255,255,255,.75)}
+#ta-bw .ta-sum-total-amt{font-size:1.6rem;font-weight:800;color:var(--ta-gold)}
+#ta-bw .ta-sum-monthly-note{text-align:right;font-size:.8rem;color:rgba(255,255,255,.55);margin-top:2px}
+#ta-bw .ta-alert{border-radius:var(--ta-radius-sm);padding:14px 16px;margin-bottom:16px;font-size:.9rem;display:flex;gap:10px;align-items:flex-start}
+#ta-bw .ta-alert-err{background:var(--ta-red-bg);border:1px solid #fca5a5;color:#991b1b}
+#ta-bw .ta-alert-info{background:var(--ta-gold-light);border:1px solid #fcd34d;color:#92400e}
+#ta-bw .ta-alert-ok{background:var(--ta-green-bg);border:1px solid #86efac;color:#166534}
+#ta-bw .ta-venue-tbc{text-align:center;padding:40px 20px;background:var(--ta-grey-100);border-radius:var(--ta-radius);color:var(--ta-grey-600);margin-top:16px}
+#ta-bw .ta-venue-tbc h3{color:var(--ta-navy);margin-bottom:8px}
+#ta-bw .ta-result{min-height:60vh;display:flex;align-items:center;justify-content:center;padding:24px}
+#ta-bw .ta-result-card{background:var(--ta-white);border-radius:var(--ta-radius-lg);box-shadow:var(--ta-shadow-lg);padding:48px 36px;max-width:480px;width:100%;text-align:center}
+#ta-bw .ta-result-icon{font-size:3.5rem;margin-bottom:18px}
+#ta-bw .ta-result-card h1{font-size:1.6rem;color:var(--ta-navy);margin-bottom:12px}
+#ta-bw .ta-result-card p{color:var(--ta-grey-600);margin-bottom:8px;line-height:1.7}
+#ta-bw .ta-action-row{margin-top:28px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+#ta-bw .ta-spin{display:inline-block;width:20px;height:20px;border:2.5px solid rgba(255,255,255,.35);border-top-color:var(--ta-white);border-radius:50%;animation:ta-spin .7s linear infinite;flex-shrink:0}
+@keyframes ta-spin{to{transform:rotate(360deg)}}
+#ta-bw .ta-footer{background:var(--ta-navy);color:rgba(255,255,255,.5);text-align:center;padding:18px;font-size:.8rem}
+@media(min-width:600px){#ta-bw .ta-header h1{font-size:1.8rem}#ta-bw .ta-card{padding:28px 32px}#ta-bw .ta-child-card{padding:24px 28px}#ta-bw .ta-summary{padding:28px 32px}#ta-bw .ta-result-card{padding:56px 48px}}
+@media(max-width:500px){#ta-bw .ta-form-row{grid-template-columns:1fr}#ta-bw .ta-slot-grid{grid-template-columns:1fr}#ta-bw .ta-btn-lg{font-size:1rem;padding:14px 20px}}
+</style>
+ <div id="ta-bw">
+  <div id="ta-root" style="display:flex;align-items:center;justify-content:center;min-height:200px;font-family:sans-serif;color:#0a1f44">
+   Loading...
+  </div>
+ </div>
+ <script type="text/babel">
+const TENNIS_API_URL = 'https://tennis-academy-dzrw.onrender.com';
+const EUR  = ' euro';
+const ADMIN_SECRET   = 'edOulgm-z_dULoVY910MV_dk0n7za-H0';
+const { useState, useEffect, useCallback } = React;
+const MONTHS = 10;
+const EARLY_BIRD_CUTOFF_DATE = new Date('2026-08-01T23:59:59');
+const PRICING_DISPLAY = {
+earlyBird: {
+child1: { total: 615,  monthly: 61.50 },
+child2: { total: 600,  monthly: 60.00 },
+child3: { total: 0,    monthly: 0 },
+},
+standard: {
+child1: { total: 640,  monthly: 64.00 },
+child2: { total: 615,  monthly: 61.50 },
+child3: { total: 0,    monthly: 0 },
+},
+upfrontEarlyBird: {
+child1: { total: 589,  monthly: null },
+child2: { total: 589,  monthly: null },
+child3: { total: 0,    monthly: null },
+},
+};
+const VENUES = ['Clontarf', 'Currenagh'];
+const CLASS_GROUPS = [
+'Junior and Senior Infants',
+'First and Second Class',
+'Third and Fourth Class',
+'Fifth and Sixth Class',
+];
+const SCHEDULE = {
+Clontarf: {
+'Junior and Senior Infants': [
+{ id: 'clontarf-jsi-mon', day: 'Monday',    time: '1:30 PM - 2:15 PM', capacity: 10 },
+{ id: 'clontarf-jsi-tue', day: 'Tuesday',   time: '1:30 PM - 2:15 PM', capacity: 10 },
+{ id: 'clontarf-jsi-wed', day: 'Wednesday', time: '1:30 PM - 2:15 PM', capacity: 10 },
+{ id: 'clontarf-jsi-fri', day: 'Friday',    time: '1:40 PM - 2:25 PM', capacity: 10 },
+],
+'First and Second Class': [
+{ id: 'clontarf-12-mon', day: 'Monday',    time: '2:30 PM - 3:15 PM', capacity: 12 },
+{ id: 'clontarf-12-tue', day: 'Tuesday',   time: '2:30 PM - 3:15 PM', capacity: 12 },
+{ id: 'clontarf-12-wed', day: 'Wednesday', time: '2:30 PM - 3:15 PM', capacity: 12 },
+{ id: 'clontarf-12-fri', day: 'Friday',    time: '2:30 PM - 3:15 PM', capacity: 12 },
+],
+'Third and Fourth Class': [
+{ id: 'clontarf-34-mon', day: 'Monday',    time: '3:15 PM - 4:15 PM', capacity: 12 },
+{ id: 'clontarf-34-tue', day: 'Tuesday',   time: '3:15 PM - 4:15 PM', capacity: 12 },
+{ id: 'clontarf-34-wed', day: 'Wednesday', time: '3:15 PM - 4:15 PM', capacity: 12 },
+{ id: 'clontarf-34-fri', day: 'Friday',    time: '3:15 PM - 4:15 PM', capacity: 12 },
+],
+'Fifth and Sixth Class': [
+{ id: 'clontarf-56-mon', day: 'Monday',    time: '4:15 PM - 5:15 PM', capacity: 12 },
+{ id: 'clontarf-56-tue', day: 'Tuesday',   time: '4:15 PM - 5:15 PM', capacity: 6  },
+{ id: 'clontarf-56-wed', day: 'Wednesday', time: '4:15 PM - 5:15 PM', capacity: 12 },
+{ id: 'clontarf-56-fri', day: 'Friday',    time: '4:15 PM - 5:15 PM', capacity: 12 },
+],
+},
+Currenagh: null,
+};
+const COLLECTION_SCHOOLS = [
+{ name: 'Belgrove IGS', times: ['1:15 PM', '2:15 PM'] },
+{ name: 'Belgrove JBS', times: ['1:20 PM', '2:20 PM'] },
+];
+function getPricingTier(now = new Date()) {
+return now <= EARLY_BIRD_CUTOFF_DATE ? 'earlyBird' : 'standard';
+}
+function getChildDisplayPrice(index, tier) {
+const key = `child${Math.min(index, 3)}`;
+return PRICING_DISPLAY[tier][key];
+}
+function getSlotLabel(venue, classGroup, slotId) {
+if (!venue || !classGroup || !slotId) return '--';
+const slots = (SCHEDULE[venue] || {})[classGroup] || [];
+const slot  = slots.find(s => s.id === slotId);
+return slot ? `${slot.day}  ${slot.time}` : slotId;
+}
+function PaymentTypeSelector({ paymentType, onChange, pricingTier }) {
+if (pricingTier !== 'earlyBird') return null;
+const sel = v => ({ display:'flex',flexDirection:'column',gap:6,padding:'16px 14px',border:paymentType===v?'2px solid var(--ta-navy)':'1.5px solid var(--ta-grey-200)',borderRadius:'var(--ta-radius-sm)',cursor:'pointer',background:paymentType===v?'var(--ta-navy-light)':v==='upfront'?'var(--ta-gold-light)':'var(--ta-white)',transition:'all var(--ta-transition)' });
+return (
+<div className="ta-card">
+<div className="ta-card-title"><span className="ta-step">1</span> Payment Option</div>
+<div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12 }}>
+<label style={sel('upfront')}><input type="radio" name="pt" checked={paymentType==='upfront'} onChange={()=>onChange('upfront')} style={{position:'absolute',opacity:0,width:0,height:0}}/>
+<span style={{fontWeight:700,color:'var(--ta-navy)'}}>Pay in Full</span>
+<span style={{fontSize:'.85rem',fontWeight:600}}>589 euro one-time per child</span>
+<span style={{fontSize:'.78rem',color:'var(--ta-gold-dark)'}}>Save 26 euro - early bird only</span>
+</label>
+<label style={sel('monthly')}><input type="radio" name="pt" checked={paymentType==='monthly'} onChange={()=>onChange('monthly')} style={{position:'absolute',opacity:0,width:0,height:0}}/>
+<span style={{fontWeight:700,color:'var(--ta-navy)'}}>Monthly Payments</span>
+<span style={{fontSize:'.85rem',fontWeight:600}}>10 payments of 61.50 euro</span>
+<span style={{fontSize:'.78rem',color:'var(--ta-grey-600)'}}>615 euro total for first child</span>
+</label>
+</div>
+{paymentType==='upfront' && <div className="ta-alert ta-alert-info" style={{marginTop:14,marginBottom:0}}><span>Early Bird Full Payment - 589 euro per child (3rd free), one payment. Available until 1 Aug 2026.</span></div>}
+</div>
+);
+}
+function ParentForm({ parent, onChange, errors }) {
+const handle = field => e => onChange({ ...parent, [field]: e.target.value });
+return (
+<div className="ta-card">
+<div className="ta-card-title">
+<span className="ta-step">1</span>
+Your Details
+</div>
+<div className="ta-form-row">
+<div className="ta-form-group">
+<label className="ta-label">Full Name <span className="ta-req">*</span></label>
+<input type="text" className={`ta-ctrl${errors.name ? ' ta-err' : ''}`}
+value={parent.name} onChange={handle('name')} placeholder="e.g. Jane Murphy" autoComplete="name" />
+{errors.name && <p className="ta-field-err">! {errors.name}</p>}
+</div>
+<div className="ta-form-group">
+<label className="ta-label">Phone Number <span className="ta-req">*</span></label>
+<input type="tel" className={`ta-ctrl${errors.phone ? ' ta-err' : ''}`}
+value={parent.phone} onChange={handle('phone')} placeholder="e.g. 087 123 4567" autoComplete="tel" />
+{errors.phone && <p className="ta-field-err">! {errors.phone}</p>}
+</div>
+</div>
+<div className="ta-form-group">
+<label className="ta-label">Additional Phone Number</label>
+<input type="tel" className="ta-ctrl"
+value={parent.phone2} onChange={handle('phone2')} placeholder="e.g. 01 234 5678" autoComplete="tel" />
+</div>
+<div className="ta-form-group">
+<label className="ta-label">Email Address <span className="ta-req">*</span></label>
+<input type="email" className={`ta-ctrl${errors.email ? ' ta-err' : ''}`}
+value={parent.email} onChange={handle('email')} placeholder="e.g. jane@example.com" autoComplete="email" />
+{errors.email && <p className="ta-field-err">! {errors.email}</p>}
+</div>
+<div className="ta-form-group" style={{ marginBottom:0 }}>
+<label className="ta-label">Address</label>
+<textarea className="ta-ctrl" value={parent.address} onChange={handle('address')}
+placeholder="Your home address" rows={2} ></textarea>
+</div>
+</div>
+);
+}
+function ChildForm({ index, child, venue, availability, pricingTier, displayPrice, onChange, onRemove, errors, canRemove }) {
+const childNumber = index + 1;
+const isFree      = childNumber === 3;
+const label       = childNumber === 1 ? '1st Child' : childNumber === 2 ? '2nd Child' : '3rd Child';
+const venueSlots  = venue && SCHEDULE[venue] ? (SCHEDULE[venue][child.classGroup] || []) : [];
+const handle = field => e => {
+const updated = { ...child, [field]: e.target.value };
+if (field === 'classGroup') updated.slotId = '';
+onChange(updated);
+};
+const availStatus = slotId =>
+availability && child.classGroup ? (availability[child.classGroup] || {})[slotId] || null : null;
+return (
+<div className="ta-child-card">
+<div className="ta-child-hdr">
+<div className="ta-child-ttl">
+{label}
+{isFree && <span className="ta-free-badge">FREE</span>}
+</div>
+<div style={{ display:'flex', alignItems:'center', gap:12 }}>
+{!isFree && displayPrice && (
+<div className="ta-price-tag">
+{displayPrice.monthly !== null
+? <><strong>{displayPrice.monthly.toFixed(2)}{EUR}/mo</strong><span>{displayPrice.total}{EUR} total</span></>
+: <strong>{displayPrice.total}{EUR} upfront</strong>
+}
+</div>
+)}
+{canRemove && (
+<button type="button" className="ta-remove-btn" onClick={onRemove} title="Remove child">X</button>
+)}
+</div>
+</div>
+<div className="ta-form-row">
+<div className="ta-form-group">
+<label className="ta-label">First Name <span className="ta-req">*</span></label>
+<input type="text" className={`ta-ctrl${errors.firstName ? ' ta-err' : ''}`}
+value={child.firstName} onChange={handle('firstName')} placeholder="First name" />
+{errors.firstName && <p className="ta-field-err">! {errors.firstName}</p>}
+</div>
+<div className="ta-form-group">
+<label className="ta-label">Surname <span className="ta-req">*</span></label>
+<input type="text" className={`ta-ctrl${errors.lastName ? ' ta-err' : ''}`}
+value={child.lastName} onChange={handle('lastName')} placeholder="Surname" />
+{errors.lastName && <p className="ta-field-err">! {errors.lastName}</p>}
+</div>
+</div>
+<div className="ta-form-group">
+<label className="ta-label">Date of Birth <span className="ta-req">*</span></label>
+<input type="date" className={`ta-ctrl${errors.dateOfBirth ? ' ta-err' : ''}`}
+value={child.dateOfBirth} onChange={handle('dateOfBirth')} />
+{errors.dateOfBirth && <p className="ta-field-err">! {errors.dateOfBirth}</p>}
+</div>
+<div className="ta-form-group">
+<label className="ta-label">School Class Group <span className="ta-req">*</span></label>
+<select className={`ta-ctrl${errors.classGroup ? ' ta-err' : ''}`}
+value={child.classGroup} onChange={handle('classGroup')}
+disabled={!venue || venue === 'Currenagh'}>
+<option value="">-- Select class group --</option>
+{CLASS_GROUPS.map(g => <option key={g} value={g}>{g}</option>)}
+</select>
+{errors.classGroup && <p className="ta-field-err">! {errors.classGroup}</p>}
+</div>
+{child.classGroup && venueSlots.length > 0 && (
+<div className="ta-form-group">
+<label className="ta-label">Day and Time Slot <span className="ta-req">*</span></label>
+<div className="ta-slot-grid">
+{venueSlots.map(slot => {
+const avail  = availStatus(slot.id);
+const isFull = avail ? avail.full : false;
+const count  = avail ? avail.available : null;
+const isLow  = !isFull && count !== null && count <= 3;
+return (
+<div className="ta-slot-opt" key={slot.id}>
+<input type="radio" id={`slot-${index}-${slot.id}`} name={`slot-${index}`}
+value={slot.id} checked={child.slotId === slot.id}
+onChange={() => !isFull && onChange({ ...child, slotId: slot.id })}
+disabled={isFull} />
+<label htmlFor={`slot-${index}-${slot.id}`} className={`ta-slot-lbl${isFull ? ' ta-full' : ''}`}>
+<span className="ta-slot-day">{slot.day}</span>
+<span className="ta-slot-time">{slot.time}</span>
+{avail && (
+<span className={`ta-slot-avail ${isFull ? 'ta-avail-full' : isLow ? 'ta-avail-low' : 'ta-avail-ok'}`}>
+{isFull ? 'Fully booked' : isLow ? `${count} place${count===1?'':'s'} left` : `${count} available`}
+</span>
+)}
+</label>
+</div>
+);
+})}
+</div>
+{errors.slotId && !child.slotId && <p className="ta-field-err">! {errors.slotId}</p>}
+{child.slotId && availStatus(child.slotId) && availStatus(child.slotId).full && (
+<div className="ta-alert ta-alert-err" style={{ marginTop:8 }}>
+<span>This slot is <strong>fully booked</strong>. Please choose another slot or{' '}
+<a href="mailto:info@tennisacademy.ie">get in touch</a>.</span>
+</div>
+)}
+</div>
+)}
+<div className="ta-form-group">
+<label className="ta-label">Medical / Health Notes</label>
+<textarea className="ta-ctrl" value={child.medicalNotes} onChange={handle('medicalNotes')}
+placeholder="Any medical conditions or health info we should know about" rows={2} ></textarea>
+</div>
+<div className="ta-form-group">
+<label className="ta-label">Additional Notes</label>
+<textarea className="ta-ctrl" value={child.parentNotes} onChange={handle('parentNotes')}
+placeholder="Anything else you would like us to know" rows={2} ></textarea>
+</div>
+<div className="ta-form-group" style={{ marginBottom:0 }}>
+<label className="ta-label">How Did You Hear About Us?</label>
+<textarea className="ta-ctrl" value={child.howHeardAboutUs} onChange={handle('howHeardAboutUs')}
+placeholder="e.g. friend recommendation, social media, school notice" rows={2} ></textarea>
+</div>
+</div>
+);
+}
+function CollectionSection({ collection, onChange, collectionError }) {
+const radioStyle = selected => ({
+display:'flex', alignItems:'center', justifyContent:'center',
+flex:1, cursor:'pointer', padding:'11px 16px', fontWeight:600, fontSize:'1rem',
+border: selected ? '2px solid var(--ta-navy)' : '1.5px solid var(--ta-grey-200)',
+borderRadius:'var(--ta-radius-sm)',
+background: selected ? 'var(--ta-navy-light)' : 'var(--ta-white)',
+transition:'all var(--ta-transition)',
+});
+const timeStyle = selected => ({
+display:'flex', alignItems:'center', justifyContent:'center',
+flex:1, cursor:'pointer', padding:'10px 14px', fontSize:'.9rem', fontWeight:600,
+border: selected ? '2px solid var(--ta-navy)' : '1.5px solid var(--ta-grey-200)',
+borderRadius:'var(--ta-radius-sm)',
+background: selected ? 'var(--ta-navy-light)' : 'var(--ta-white)',
+transition:'all var(--ta-transition)',
+});
+return (
+<div className="ta-card">
+<div className="ta-card-title">
+<span className="ta-step">4</span>
+School Collection
+</div>
+<div className="ta-form-group">
+<label className="ta-label">Do you want your child to be collected by us?</label>
+<p style={{ fontSize:'.825rem', color:'var(--ta-grey-600)', marginBottom:10, marginTop:4 }}>
+Collection available on Monday, Tuesday and Wednesday
+</p>
+<div style={{ display:'flex', gap:12 }}>
+<label style={radioStyle(collection.wantsCollection === 'no')}>
+<input type="radio" name="wantsCollection" value="no"
+checked={collection.wantsCollection === 'no'}
+onChange={() => onChange({ ...collection, wantsCollection:'no', schoolVenue:'', time:'' })}
+style={{ position:'absolute', opacity:0, width:0, height:0 }} />
+No
+</label>
+<label style={radioStyle(collection.wantsCollection === 'yes')}>
+<input type="radio" name="wantsCollection" value="yes"
+checked={collection.wantsCollection === 'yes'}
+onChange={() => onChange({ ...collection, wantsCollection:'yes', schoolVenue:'', time:'' })}
+style={{ position:'absolute', opacity:0, width:0, height:0 }} />
+Yes
+</label>
+</div>
+</div>
+{collection.wantsCollection === 'yes' && (
+<div>
+<div className="ta-form-group">
+<label className="ta-label">Collection School and Time <span className="ta-req">*</span></label>
+<div style={{ marginTop:4 }}>
+{COLLECTION_SCHOOLS.map(school => (
+<div key={school.name} style={{ marginBottom:14 }}>
+<div style={{ fontWeight:700, color:'var(--ta-navy)', marginBottom:8, fontSize:'.9rem' }}>{school.name}</div>
+<div style={{ display:'flex', gap:10 }}>
+{school.times.map(time => (
+<label key={time} style={timeStyle(collection.schoolVenue === school.name && collection.time === time)}>
+<input type="radio" name="collectionOption"
+checked={collection.schoolVenue === school.name && collection.time === time}
+onChange={() => onChange({ ...collection, schoolVenue: school.name, time: time })}
+style={{ position:'absolute', opacity:0, width:0, height:0 }} />
+{time}
+</label>
+))}
+</div>
+</div>
+))}
+</div>
+{collectionError && <p className="ta-field-err">! {collectionError}</p>}
+</div>
+<div className="ta-form-group" style={{ marginBottom:0 }}>
+<label className="ta-label">Teacher's Name</label>
+<input type="text" className="ta-ctrl"
+value={collection.teacherName}
+onChange={e => onChange({ ...collection, teacherName: e.target.value })}
+placeholder="e.g. Ms. O'Brien" />
+</div>
+</div>
+)}
+</div>
+);
+}
+function OrderSummary({ parent, venue, children, pricingTier, paymentType }) {
+if (!children.length) return null;
+const isUpfront=paymentType==='upfront', isEB=pricingTier==='earlyBird';
+const dTier=isUpfront?'upfrontEarlyBird':pricingTier;
+let tot=0, mo=0;
+return (
+<div className="ta-summary">
+<h2>Order Summary</h2>
+<div className="ta-sum-sec"><div className="ta-sum-lbl">Parent / Guardian</div><div className="ta-sum-val">{parent.name||'--'}</div><div className="ta-sum-val" style={{fontSize:'.82rem',opacity:.7}}>{parent.email}{parent.phone?` . ${parent.phone}`:''}</div></div>
+<div className="ta-sum-sec"><div className="ta-sum-lbl">Venue</div><div className="ta-sum-val">{venue||'--'}</div></div>
+<div className="ta-sum-sec"><div className="ta-sum-lbl">Pricing</div><div className="ta-sum-val"><span style={{background:isUpfront||isEB?'#c9963a':'rgba(255,255,255,.2)',color:'#fff',fontSize:'.75rem',fontWeight:700,padding:'2px 8px',borderRadius:20}}>{isUpfront?'Pay in Full':isEB?'Early Bird':'Standard'}</span>{isUpfront&&<span style={{fontSize:'.78rem',opacity:.6,marginLeft:8}}>One-time</span>}{!isUpfront&&isEB&&<span style={{fontSize:'.78rem',opacity:.6,marginLeft:8}}>Until 1 Aug</span>}</div></div>
+<hr className="ta-sum-div" />
+{children.map((child,i)=>{
+const n=i+1,isFr=n===3,price=getChildDisplayPrice(n,dTier),slot=getSlotLabel(venue,child.classGroup,child.slotId);
+if(!isFr){tot+=price.total;if(price.monthly!==null)mo+=price.monthly;}
+return(<div className="ta-sum-child" key={i}><div className="ta-sum-child-hdr"><span className="ta-sum-child-name">{child.firstName||'--'} {child.lastName}</span><span className="ta-sum-child-price">{isFr?<span style={{color:'#86efac'}}>FREE</span>:isUpfront?price.total+EUR:price.monthly.toFixed(2)+EUR+'/mo'}</span></div><div className="ta-sum-child-detail">{child.classGroup||'--'} . {slot}</div>{!isFr&&!isUpfront&&<div className="ta-sum-child-detail" style={{marginTop:2}}>{price.total}{EUR} total</div>}</div>);
+})}
+<hr className="ta-sum-div" />
+{isUpfront?(<div className="ta-sum-total-row"><div><div className="ta-sum-total-lbl">Total due today</div><div style={{fontSize:'.75rem',color:'rgba(255,255,255,.4)',marginTop:2}}>One-time - full season</div></div><div><div className="ta-sum-total-amt">{tot.toFixed(2)}{EUR}</div></div></div>
+) : (
+<div className="ta-sum-total-row">
+<div>
+<div className="ta-sum-total-lbl">Monthly payment</div>
+<div style={{ fontSize:'.75rem', color:'rgba(255,255,255,.4)', marginTop:2 }}>{MONTHS} payments - Sep to Jun</div>
+</div>
+<div>
+<div className="ta-sum-total-amt">{(Math.round(mo * 100) / 100).toFixed(2)}{EUR}</div>
+<div className="ta-sum-monthly-note">Season total: {tot.toFixed(2)}{EUR}</div>
+</div>
+</div>
+)}
+</div>
+);
+}
+function SuccessPage({ onBack }) {
+return (
+<div className="ta-result"><div className="ta-result-card">
+<div className="ta-result-icon">Done!</div>
+<h1>You're all booked!</h1>
+<p>Thank you for registering. Your payment was successful and your children are enrolled for the season.</p>
+<p>If you chose <strong>monthly payments</strong>, you'll be charged for {MONTHS} months -- your subscription ends automatically. If you <strong>paid in full</strong>, nothing more to do.</p>
+<p style={{fontSize:'.875rem',marginTop:8}}>A confirmation email will be sent to you shortly.</p>
+<div className="ta-action-row"><button type="button" className="ta-btn ta-btn-gold" onClick={onBack}>Back to Home</button></div>
+</div></div>
+);
+}
+function CancelPage({ onBack }) {
+return (
+<div className="ta-result">
+<div className="ta-result-card">
+<div className="ta-result-icon">Cancelled</div>
+<h1>Payment Cancelled</h1>
+<p>No payment has been taken. Your booking has not been confirmed.</p>
+<p>If you'd like to complete your registration, simply go back and try again.</p>
+<p style={{ fontSize:'.875rem', marginTop:8 }}>
+Having trouble? <a href="mailto:info@tennisacademy.ie">Get in touch</a> and we'll help.
+</p>
+<div className="ta-action-row">
+<button type="button" className="ta-btn ta-btn-gold" onClick={onBack}>Try Again</button>
+</div>
+</div>
+</div>
+);
+}
+function emptyChild() {
+return { firstName:'', lastName:'', dateOfBirth:'', classGroup:'', slotId:'', medicalNotes:'', parentNotes:'', howHeardAboutUs:'' };
+}
+function BookingPage() {
+const [parent,       setParent]       = useState({ name:'', email:'', phone:'', phone2:'', address:'' });
+const [venue,        setVenue]        = useState('');
+const [children,     setChildren]     = useState([emptyChild()]);
+const [collection,   setCollection]   = useState({ wantsCollection:'', schoolVenue:'', time:'', teacherName:'' });
+const [availability, setAvailability] = useState({});
+const [loadingAvail, setLoadingAvail] = useState(false);
+const [submitting,   setSubmitting]   = useState(false);
+const [apiErrors,    setApiErrors]    = useState([]);
+const [fieldErrors,  setFieldErrors]  = useState({});
+const [paymentType,  setPaymentType]  = useState('monthly');
+const [page, setPage] = useState(() => {
+const hash = window.location.hash;
+if (hash === '#ta_success') return 'success';
+if (hash === '#ta_cancelled') return 'cancel';
+return 'form';
+});
+useEffect(() => {
+const hash = window.location.hash;
+if (hash === '#ta_success' || hash === '#ta_cancelled') {
+window.history.replaceState({}, '', window.location.pathname + window.location.search);
+}
+}, []);
+const pricingTier = getPricingTier();
+const isEarlyBird = pricingTier === 'earlyBird';
+const fetchAvailability = useCallback(async (v) => {
+if (!v || !SCHEDULE[v]) { setAvailability({}); return; }
+if (SCHEDULE[v] === null) { setAvailability({ tbc:true }); return; }
+setLoadingAvail(true);
+try {
+const res  = await fetch(`${TENNIS_API_URL}/api/availability?venue=${encodeURIComponent(v)}`);
+const data = await res.json();
+setAvailability(data);
+} catch { setAvailability({}); }
+finally { setLoadingAvail(false); }
+}, []);
+useEffect(() => { fetchAvailability(venue); }, [venue, fetchAvailability]);
+function handleVenueChange(e) {
+setVenue(e.target.value);
+setChildren(prev => prev.map(c => ({ ...c, classGroup:'', slotId:'' })));
+setApiErrors([]);
+}
+function updateChild(i, updated) {
+setChildren(prev => prev.map((c, idx) => idx === i ? updated : c));
+}
+function validate() {
+const errs = {}, pErrs = {};
+if (!parent.name.trim())  pErrs.name  = 'Name is required';
+if (!parent.email.trim()) pErrs.email = 'Email is required';
+else if (!/\S+@\S+\.\S+/.test(parent.email)) pErrs.email = 'Enter a valid email';
+if (!parent.phone.trim()) pErrs.phone = 'Phone number is required';
+if (Object.keys(pErrs).length) errs.parent = pErrs;
+if (!venue) errs.venue = 'Please select a venue';
+const childErrs = children.map(c => {
+const ce = {};
+if (!c.firstName.trim()) ce.firstName = 'Required';
+if (!c.lastName.trim())  ce.lastName  = 'Required';
+if (!c.dateOfBirth)      ce.dateOfBirth = 'Required';
+if (!c.classGroup)       ce.classGroup = 'Required';
+if (!c.slotId)           ce.slotId     = 'Please select a time slot';
+return ce;
+});
+if (childErrs.some(ce => Object.keys(ce).length)) errs.children = childErrs;
+if (collection.wantsCollection === 'yes' && (!collection.schoolVenue || !collection.time)) {
+errs.collectionOption = 'Please select a school and collection time';
+}
+setFieldErrors(errs);
+return Object.keys(errs).length === 0;
+}
+async function handleSubmit(e) {
+e.preventDefault();
+setApiErrors([]);
+if (!validate()) {
+const el = document.querySelector('#ta-bw .ta-err, #ta-bw .ta-field-err');
+if (el) el.scrollIntoView({ behavior:'smooth', block:'center' });
+return;
+}
+setSubmitting(true);
+try {
+const base       = window.location.origin + window.location.pathname;
+const successUrl = 'https://tennis-academy-dzrw.onrender.com/payment-success';
+const cancelUrl  = base;
+const res  = await fetch(`${TENNIS_API_URL}/api/create-checkout-session`, {
+method:  'POST',
+headers: { 'Content-Type': 'application/json' },
+body:    JSON.stringify({ parent, venue, children, paymentType, collection, successUrl, cancelUrl }),
+});
+const data = await res.json();
+if (!res.ok) {
+setApiErrors(data.errors || ['Something went wrong. Please try again.']);
+setSubmitting(false);
+document.getElementById('ta-bw').scrollIntoView({ behavior:'smooth', block:'start' });
+return;
+}
+window.location.href = data.url;
+} catch {
+setApiErrors(['Network error - please check your connection and try again.']);
+setSubmitting(false);
+}
+}
+if (page === 'success') return <SuccessPage onBack={() => setPage('form')} />;
+if (page === 'cancel')  return <CancelPage  onBack={() => setPage('form')} />;
+const isCurrenagh  = venue === 'Currenagh';
+const showChildren = venue && !isCurrenagh;
+const hasFullSlot  = children.some(c => c.slotId && (availability[c.classGroup] || {})[c.slotId]?.full);
+const formComplete = (
+parent.name.trim() && parent.email.trim() && parent.phone.trim() &&
+venue && !isCurrenagh &&
+children.every(c => c.firstName && c.lastName && c.dateOfBirth && c.classGroup && c.slotId)
+);
+const canSubmit    = formComplete && !hasFullSlot && !submitting;
+const showPayNow   = parent.name.trim() && parent.email.trim() && parent.phone.trim() && venue && !isCurrenagh;
+const cutoffStr = EARLY_BIRD_CUTOFF_DATE.toLocaleDateString('en-IE', { day:'numeric', month:'long', year:'numeric' });
+return (
+<div>
+<header className="ta-header">
+<div className="ta-container">
+<div className="ta-logo-row">
+<div>
+<h1>Tennis Academy</h1>
+<p className="ta-tagline">Registration - September to June</p>
+</div>
+</div>
+</div>
+</header>
+<div className="ta-main">
+<div className="ta-container">
+<div className="ta-pricing-banner">
+<span className={`ta-badge${isEarlyBird ? '' : ' ta-badge-std'}`}>
+{isEarlyBird ? 'Early Bird Pricing' : 'Standard Pricing'}
+</span>
+<p>
+{isEarlyBird
+? <span>Early bird rates apply until <strong>{cutoffStr}</strong>. Pay upfront before August 1 for only <strong>589 euro</strong> for each of the first two children and the third free, or pay over <strong>10 monthly payments</strong> - <strong>615 euro</strong> for the first child, <strong>600 euro</strong> for the second and the third child free.</span>
+: <span>Standard rates apply after {cutoffStr}. Season fee is <strong>640 euro</strong> for the first child, paid over <strong>10 monthly payments</strong>.</span>
+}
+</p>
+</div>
+<form onSubmit={handleSubmit} noValidate>
+{apiErrors.length > 0 && (
+<div className="ta-alert ta-alert-err">
+<span>Error: </span>
+<div>{apiErrors.map((err, i) => <p key={i} style={{ margin:0 }}>{err}</p>)}</div>
+</div>
+)}
+<PaymentTypeSelector paymentType={paymentType} onChange={setPaymentType} pricingTier={pricingTier} ></PaymentTypeSelector>
+<ParentForm parent={parent} onChange={setParent} errors={fieldErrors.parent || {}} ></ParentForm>
+<div className="ta-card">
+<div className="ta-card-title">
+<span className="ta-step">2</span>
+Select Venue
+</div>
+<div className="ta-form-group" style={{ marginBottom:0 }}>
+<label className="ta-label">Venue <span className="ta-req">*</span></label>
+<select className={`ta-ctrl${fieldErrors.venue ? ' ta-err' : ''}`}
+value={venue} onChange={handleVenueChange}>
+<option value="">-- Select a venue --</option>
+{VENUES.map(v => <option key={v} value={v}>{v}</option>)}
+</select>
+{fieldErrors.venue && <p className="ta-field-err">! {fieldErrors.venue}</p>}
+</div>
+{isCurrenagh && (
+<div className="ta-venue-tbc">
+<h3>Schedule Coming Soon</h3>
+<p>The Currenagh schedule is yet to be confirmed.<br />
+Please check back soon or <a href="mailto:info@tennisacademy.ie">get in touch</a> to register your interest.</p>
+</div>
+)}
+{loadingAvail && <p style={{ marginTop:12, color:'var(--ta-grey-400)', fontSize:'.875rem' }}>Checking availability...</p>}
+</div>
+{showChildren && (
+<div className="ta-card">
+<div className="ta-card-title">
+<span className="ta-step">3</span>
+Children
+{children.length < 3 && (
+<span style={{ fontSize:'.78rem', fontWeight:400, color:'var(--ta-grey-400)', marginLeft:6 }}>
+(up to 3 - 3rd child is free)
+</span>
+)}
+</div>
+{children.map((child, i) => {
+const n           = i + 1;
+const isFr        = n === 3;
+const displayTier = paymentType === 'upfront' ? 'upfrontEarlyBird' : pricingTier;
+const dp          = isFr ? { total:0, monthly:null } : getChildDisplayPrice(n, displayTier);
+return (
+<ChildForm key={i} index={i} child={child} venue={venue}
+availability={availability} pricingTier={pricingTier} displayPrice={dp}
+onChange={updated => updateChild(i, updated)}
+onRemove={() => setChildren(prev => prev.filter((_,idx) => idx !== i))}
+errors={(fieldErrors.children || [])[i] || {}}
+canRemove={children.length > 1} />
+);
+})}
+{children.length < 3 && (
+<div className="ta-add-child-row">
+<button type="button" className="ta-btn ta-btn-outline"
+onClick={() => setChildren(prev => [...prev, emptyChild()])}>
++ Add Another Child
+{children.length === 2 && (
+<span style={{ fontSize:'.78rem', marginLeft:4, opacity:.7 }}>(3rd child is free!)</span>
+)}
+</button>
+</div>
+)}
+</div>
+)}
+{showChildren && (
+<CollectionSection
+collection={collection}
+onChange={setCollection}
+collectionError={fieldErrors.collectionOption}
+/>
+)}
+{showPayNow && (
+<div style={{ marginBottom:10 }}>
+<button type="submit" className="ta-btn ta-btn-gold ta-btn-full" disabled={!canSubmit}>
+{submitting ? <><span className="ta-spin" ></span>&nbsp;Redirecting to payment...</> : <>Pay Now</>}
+</button>
+</div>
+)}
+{formComplete && !hasFullSlot && (
+<>
+<OrderSummary parent={parent} venue={venue} children={children} pricingTier={pricingTier} paymentType={paymentType} ></OrderSummary>
+<div style={{ marginBottom:12 }}>
+<div className="ta-alert ta-alert-info">
+<span>
+You'll be taken to <strong>Stripe's secure checkout</strong> to complete payment.
+Your card details are never stored on our servers.
+{paymentType === 'upfront'
+? ' You will be charged once for the full season.'
+: ` You will be charged monthly for ${MONTHS} months.`
+}
+</span>
+</div>
+</div>
+<button type="submit" className="ta-btn ta-btn-gold ta-btn-lg ta-btn-full" disabled={!canSubmit}>
+{submitting
+? <><span className="ta-spin" ></span>&nbsp;Redirecting to payment...</>
+: <>Proceed to Secure Payment</>
+}
+</button>
+</>
+)}
+{!formComplete && venue && !isCurrenagh && (
+<p style={{ textAlign:'center', color:'var(--ta-grey-400)', fontSize:'.875rem', marginTop:12 }}>
+Complete all required fields above to see your order summary and payment button.
+</p>
+)}
+</form>
+</div>
+</div>
+<footer className="ta-footer">
+<p>Tennis Academy {new Date().getFullYear()} - 10-month season - September to June</p>
+{new URLSearchParams(window.location.search).get('admin') === '1' && (
+<div style={{ marginTop:12 }}>
+<a
+href={`${TENNIS_API_URL}/api/admin/export?key=${ADMIN_SECRET}`}
+style={{ background:'#c9963a', color:'#fff', padding:'8px 18px', borderRadius:6, fontSize:'.8rem', fontWeight:700, textDecoration:'none' }}
+>
+Export Bookings CSV
+</a>
+</div>
+)}
+</footer>
+</div>
+);
+}
+function mountApp() {
+const el = document.getElementById('ta-root');
+if (el) ReactDOM.createRoot(el).render(<BookingPage ></BookingPage>);
+}
+if (document.readyState === 'loading') {
+document.addEventListener('DOMContentLoaded', mountApp);
+} else {
+mountApp();
+}
+</script>
