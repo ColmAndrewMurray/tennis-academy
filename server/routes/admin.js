@@ -1,13 +1,18 @@
 /**
- * GET /api/admin/export?key=ADMIN_SECRET
- *
- * Downloads all completed bookings as a CSV file.
- * Data is pulled live from Stripe checkout session metadata.
+ * GET  /api/admin/export?key=ADMIN_SECRET  — download bookings CSV
+ * POST /api/admin/reset-bookings?key=ADMIN_SECRET — zero out all slot counts
  */
 
 const express = require('express');
 const router  = express.Router();
+const fs      = require('fs');
+const path    = require('path');
 const stripe  = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const { SCHEDULE } = require('../config/academyConfig');
+
+const BOOKINGS_PATH = process.env.NODE_ENV === 'production'
+  ? '/data/bookings.json'
+  : path.join(__dirname, '../data/bookings.json');
 
 function escapeCell(val) {
   return `"${String(val ?? '').replace(/"/g, '""')}"`;
@@ -77,6 +82,36 @@ router.get('/export', async (req, res) => {
   } catch (err) {
     console.error('Admin export error:', err.message);
     res.status(500).json({ error: 'Export failed' });
+  }
+});
+
+// POST /api/admin/reset-bookings?key=ADMIN_SECRET
+router.post('/reset-bookings', (req, res) => {
+  if (!process.env.ADMIN_SECRET || req.query.key !== process.env.ADMIN_SECRET) {
+    return res.status(401).json({ error: 'Unauthorised' });
+  }
+
+  // Build a zeroed-out bookings structure from the current schedule
+  const empty = {};
+  for (const [venue, classes] of Object.entries(SCHEDULE)) {
+    if (!classes) continue; // skip venues with null schedule (e.g. Curragha)
+    empty[venue] = {};
+    for (const [classGroup, slots] of Object.entries(classes)) {
+      empty[venue][classGroup] = {};
+      for (const slot of slots) {
+        empty[venue][classGroup][slot.id] = 0;
+      }
+    }
+  }
+
+  try {
+    fs.mkdirSync(path.dirname(BOOKINGS_PATH), { recursive: true });
+    fs.writeFileSync(BOOKINGS_PATH, JSON.stringify(empty, null, 2), 'utf8');
+    console.log('Bookings reset to zero by admin');
+    res.json({ ok: true, message: 'All booking counts reset to zero', data: empty });
+  } catch (err) {
+    console.error('Reset bookings error:', err.message);
+    res.status(500).json({ error: 'Failed to reset bookings' });
   }
 });
 
