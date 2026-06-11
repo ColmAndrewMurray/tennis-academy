@@ -74,7 +74,7 @@ const SCHEDULE = {
     ],
     'Fifth and Sixth Class': [
       { id: 'clontarf-56-mon', day: 'Monday',    time: '4:15 PM – 5:15 PM' },
-      { id: 'clontarf-56-tue', day: 'Tuesday',   time: '4:15 PM – 5:15 PM', capacity: 6 }, // Reduced capacity
+      { id: 'clontarf-56-tue', day: 'Tuesday',   time: '4:15 PM – 5:15 PM', capacity: 12 },
       { id: 'clontarf-56-wed', day: 'Wednesday', time: '4:15 PM – 5:15 PM' },
       { id: 'clontarf-56-fri', day: 'Friday',    time: '4:15 PM – 5:15 PM' },
     ],
