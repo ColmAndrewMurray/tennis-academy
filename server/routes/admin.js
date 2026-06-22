@@ -37,7 +37,7 @@ router.get('/export', async (req, res) => {
     }
 
     const headers = [
-      'Date', 'Parent Name', 'Email', 'Phone', 'Venue', 'Pricing Tier',
+      'Date', 'Parent Name', 'Email', 'Phone', 'Additional Phone', 'Venue', 'Pricing Tier',
       'No. Children', 'Monthly (€)', 'Season Total (€)',
       'Child 1 Name', 'Child 1 DOB', 'Child 1 Class', 'Child 1 Slot',
       'Child 2 Name', 'Child 2 DOB', 'Child 2 Class', 'Child 2 Slot',
@@ -59,10 +59,11 @@ router.get('/export', async (req, res) => {
 
       return [
         date,
-        m.parent_name  || '',
-        m.parent_email || '',
-        m.parent_phone || '',
-        m.venue        || '',
+        m.parent_name   || '',
+        m.parent_email  || '',
+        m.parent_phone  || '',
+        m.parent_phone2 || '',
+        m.venue         || '',
         m.pricing_tier === 'earlyBird' ? 'Early Bird' : 'Standard',
         m.child_count  || '',
         monthly,

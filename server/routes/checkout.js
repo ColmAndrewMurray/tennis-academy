@@ -144,6 +144,7 @@ router.post('/', async (req, res) => {
       parent_name:  parent.name.substring(0, 200),
       parent_email: parent.email.substring(0, 200),
       parent_phone: parent.phone.substring(0, 50),
+      ...(parent.phone2?.trim() && { parent_phone2: parent.phone2.substring(0, 50) }),
       pricing_tier: tier,
       child_count:  String(children.length),
       order_total_cents:   String(orderTotal),
