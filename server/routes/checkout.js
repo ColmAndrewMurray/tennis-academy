@@ -173,7 +173,7 @@ router.post('/', async (req, res) => {
       }
     });
 
-    const col = body.collection;
+    const col = req.body.collection;
     if (col?.wantsCollection)      metadata.collection          = col.wantsCollection;
     if (col?.schoolVenue?.trim())  metadata.collection_school   = col.schoolVenue.substring(0, 100);
     if (col?.time?.trim())         metadata.collection_time     = col.time.substring(0, 20);
