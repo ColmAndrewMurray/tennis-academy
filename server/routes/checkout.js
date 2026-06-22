@@ -158,13 +158,25 @@ router.post('/', async (req, res) => {
       metadata[`child${n}_class`]      = child.classGroup.substring(0, 100);
       metadata[`child${n}_slot_id`]    = child.slotId;
       metadata[`child${n}_slot_label`] = slot ? `${slot.day} ${slot.time}` : child.slotId;
+      if (child.dateOfBirth?.trim()) {
+        metadata[`child${n}_dob`] = child.dateOfBirth.substring(0, 20);
+      }
       if (child.medicalNotes?.trim()) {
         metadata[`child${n}_medical`] = child.medicalNotes.substring(0, 200);
       }
       if (child.parentNotes?.trim()) {
         metadata[`child${n}_notes`] = child.parentNotes.substring(0, 200);
       }
+      if (child.howHeardAboutUs?.trim()) {
+        metadata[`child${n}_how_heard`] = child.howHeardAboutUs.substring(0, 200);
+      }
     });
+
+    const col = body.collection;
+    if (col?.wantsCollection)      metadata.collection          = col.wantsCollection;
+    if (col?.schoolVenue?.trim())  metadata.collection_school   = col.schoolVenue.substring(0, 100);
+    if (col?.time?.trim())         metadata.collection_time     = col.time.substring(0, 20);
+    if (col?.teacherName?.trim())  metadata.collection_teacher  = col.teacherName.substring(0, 100);
 
     // 6. Build description for Stripe
     const childNames = children.map((c) => c.firstName).join(', ');

@@ -39,10 +39,12 @@ router.get('/export', async (req, res) => {
     const headers = [
       'Date', 'Parent Name', 'Email', 'Phone', 'Venue', 'Pricing Tier',
       'No. Children', 'Monthly (€)', 'Season Total (€)',
-      'Child 1 Name', 'Child 1 Class', 'Child 1 Slot',
-      'Child 2 Name', 'Child 2 Class', 'Child 2 Slot',
-      'Child 3 Name', 'Child 3 Class', 'Child 3 Slot',
-      'Medical Notes', 'Stripe Session ID',
+      'Child 1 Name', 'Child 1 DOB', 'Child 1 Class', 'Child 1 Slot',
+      'Child 2 Name', 'Child 2 DOB', 'Child 2 Class', 'Child 2 Slot',
+      'Child 3 Name', 'Child 3 DOB', 'Child 3 Class', 'Child 3 Slot',
+      'Medical Notes', 'Additional Notes', 'How Did You Hear About Us?',
+      'School Collection', 'Collection School', 'Collection Time', 'Collection Teacher',
+      'Stripe Session ID',
     ];
 
     const rows = sessions.map(s => {
@@ -51,10 +53,9 @@ router.get('/export', async (req, res) => {
       const monthly = (Number(m.monthly_total_cents || 0) / 100).toFixed(2);
       const total   = (Number(m.order_total_cents   || 0) / 100).toFixed(2);
 
-      const medicalNotes = [1, 2, 3]
-        .map(n => m[`child${n}_medical`])
-        .filter(Boolean)
-        .join('; ');
+      const medicalNotes     = [1, 2, 3].map(n => m[`child${n}_medical`]).filter(Boolean).join('; ');
+      const additionalNotes  = [1, 2, 3].map(n => m[`child${n}_notes`]).filter(Boolean).join('; ');
+      const howHeard         = [1, 2, 3].map(n => m[`child${n}_how_heard`]).filter(Boolean)[0] || '';
 
       return [
         date,
@@ -66,10 +67,14 @@ router.get('/export', async (req, res) => {
         m.child_count  || '',
         monthly,
         total,
-        m.child1_name || '', m.child1_class || '', m.child1_slot_label || '',
-        m.child2_name || '', m.child2_class || '', m.child2_slot_label || '',
-        m.child3_name || '', m.child3_class || '', m.child3_slot_label || '',
-        medicalNotes,
+        m.child1_name || '', m.child1_dob || '', m.child1_class || '', m.child1_slot_label || '',
+        m.child2_name || '', m.child2_dob || '', m.child2_class || '', m.child2_slot_label || '',
+        m.child3_name || '', m.child3_dob || '', m.child3_class || '', m.child3_slot_label || '',
+        medicalNotes, additionalNotes, howHeard,
+        m.collection === 'yes' ? 'Yes' : m.collection === 'no' ? 'No' : '',
+        m.collection_school   || '',
+        m.collection_time     || '',
+        m.collection_teacher  || '',
         s.id,
       ].map(escapeCell).join(',');
     });
