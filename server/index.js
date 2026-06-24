@@ -45,13 +45,16 @@ app.use(
 // The webhook route MUST receive the raw body for Stripe signature verification.
 // All other routes use JSON.
 
-app.use('/api/webhook', express.raw({ type: 'application/json' }));
+// Webhook MUST be registered before express.json() so the raw body Buffer
+// reaches the handler intact for Stripe signature verification.
+app.use('/api/webhook', express.raw({ type: '*/*' }));
+app.use('/api/webhook', require('./routes/webhook'));
+
 app.use(express.json());
 
 // ── Routes ────────────────────────────────────────────────────────────────
 app.use('/api/availability',             require('./routes/availability'));
 app.use('/api/create-checkout-session',  require('./routes/checkout'));
-app.use('/api/webhook',                  require('./routes/webhook'));
 app.use('/api/admin',                    require('./routes/admin'));
 
 // ── Health check ──────────────────────────────────────────────────────────
