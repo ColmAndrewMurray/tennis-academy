@@ -1,12 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <style>
-#ta-bw *,#ta-bw *::before,#ta-bw *::after{box-sizing:border-box;margin:0;padding:0}
+<meta>
+
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+ <script crossorigin="" src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js">
+ </script>
+ <script crossorigin="" src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js">
+ </script>
+ <style>
+  /* All styles are scoped under #ta-bw to avoid conflicting with Duda's styles */
+    #ta-bw *,#ta-bw *::before,#ta-bw *::after{box-sizing:border-box;margin:0;padding:0}
     #ta-bw{--ta-navy:#0a1f44;--ta-navy-mid:#1a3360;--ta-navy-light:#e8edf5;--ta-gold:#c9963a;--ta-gold-dark:#a87a2a;--ta-gold-light:#fdf3e3;--ta-white:#ffffff;--ta-grey-50:#f8f9fc;--ta-grey-100:#f1f4f9;--ta-grey-200:#e2e6ef;--ta-grey-400:#94a3b8;--ta-grey-600:#475569;--ta-grey-800:#1e293b;--ta-red:#dc2626;--ta-red-bg:#fef2f2;--ta-green:#16a34a;--ta-green-bg:#f0fdf4;--ta-radius-sm:6px;--ta-radius:12px;--ta-radius-lg:18px;--ta-shadow-sm:0 1px 3px rgba(10,31,68,.08);--ta-shadow:0 4px 16px rgba(10,31,68,.10);--ta-shadow-lg:0 8px 32px rgba(10,31,68,.14);--ta-font:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;--ta-transition:.18s ease;font-family:var(--ta-font);color:var(--ta-grey-800);line-height:1.6;-webkit-font-smoothing:antialiased;background:var(--ta-grey-50)}
     #ta-bw a{color:var(--ta-navy)}
     #ta-bw .ta-container{width:100%;max-width:720px;margin:0 auto;padding:0 16px}
@@ -66,7 +68,7 @@
     #ta-bw .ta-btn-full{width:100%}
     #ta-bw .ta-add-child-row{text-align:center;margin:4px 0 8px}
     #ta-bw .ta-summary{background:var(--ta-navy);color:var(--ta-white);border-radius:var(--ta-radius);padding:24px;margin-bottom:20px}
-    #ta-bw .ta-summary h2{font-size:1.1rem;font-weight:700;margin-bottom:18px;color:var(--ta-white);display:flex;align-items:center;gap:8px}
+    #ta-bw .ta-summary h2{font-size:1.1rem;font-weight:700;margin-bottom:18px;color:#ffffff !important;display:flex;align-items:center;gap:8px}
     #ta-bw .ta-sum-sec{margin-bottom:16px}
     #ta-bw .ta-sum-lbl{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.55);margin-bottom:4px}
     #ta-bw .ta-sum-val{font-size:.9rem;color:rgba(255,255,255,.9)}
@@ -98,12 +100,1312 @@
     #ta-bw .ta-footer{background:var(--ta-navy);color:rgba(255,255,255,.5);text-align:center;padding:18px;font-size:.8rem}
     @media(min-width:600px){#ta-bw .ta-header h1{font-size:1.8rem}#ta-bw .ta-card{padding:28px 32px}#ta-bw .ta-child-card{padding:24px 28px}#ta-bw .ta-summary{padding:28px 32px}#ta-bw .ta-result-card{padding:56px 48px}}
     @media(max-width:500px){#ta-bw .ta-form-row{grid-template-columns:1fr}#ta-bw .ta-slot-grid{grid-template-columns:1fr}#ta-bw .ta-btn-lg{font-size:1rem;padding:14px 20px}}
-  </style>
-</head>
-<body>
-  <div id="ta-bw">
-    <div id="ta-root" style="display:flex;align-items:center;justify-content:center;min-height:200px;font-family:sans-serif;color:#0a1f44">Loading…</div>
+ </style>
+ <div id="ta-bw">
+  <div id="ta-root" style="display:flex;align-items:center;justify-content:center;min-height:200px;font-family:sans-serif;color:#0a1f44">
+   Loading...
   </div>
-  <script>const TENNIS_API_URL="https://tennis-academy-dzrw.onrender.com",ADMIN_SECRET="edOulgm-z_dULoVY910MV_dk0n7za-H0",{useState:useState,useEffect:useEffect,useCallback:useCallback}=React,MONTHS=10,EARLY_BIRD_CUTOFF_DATE=new Date("2026-08-01T23:59:59"),PRICING_DISPLAY={earlyBird:{child1:{total:615,monthly:61.5},child2:{total:600,monthly:60},child3:{total:0,monthly:0}},standard:{child1:{total:640,monthly:64},child2:{total:615,monthly:61.5},child3:{total:0,monthly:0}},upfrontEarlyBird:{child1:{total:589,monthly:null},child2:{total:589,monthly:null},child3:{total:0,monthly:null}}},VENUES=["Clontarf","Currenagh"],CLASS_GROUPS=["Junior and Senior Infants","First and Second Class","Third and Fourth Class","Fifth and Sixth Class"],SCHEDULE={Clontarf:{"Junior and Senior Infants":[{id:"clontarf-jsi-mon",day:"Monday",time:"1:30 PM – 2:15 PM",capacity:10},{id:"clontarf-jsi-tue",day:"Tuesday",time:"1:30 PM – 2:15 PM",capacity:10},{id:"clontarf-jsi-wed",day:"Wednesday",time:"1:30 PM – 2:15 PM",capacity:10},{id:"clontarf-jsi-fri",day:"Friday",time:"1:40 PM – 2:25 PM",capacity:10}],"First and Second Class":[{id:"clontarf-12-mon",day:"Monday",time:"2:30 PM – 3:15 PM",capacity:12},{id:"clontarf-12-tue",day:"Tuesday",time:"2:30 PM – 3:15 PM",capacity:12},{id:"clontarf-12-wed",day:"Wednesday",time:"2:30 PM – 3:15 PM",capacity:12},{id:"clontarf-12-fri",day:"Friday",time:"2:30 PM – 3:15 PM",capacity:12}],"Third and Fourth Class":[{id:"clontarf-34-mon",day:"Monday",time:"3:15 PM – 4:15 PM",capacity:12},{id:"clontarf-34-tue",day:"Tuesday",time:"3:15 PM – 4:15 PM",capacity:12},{id:"clontarf-34-wed",day:"Wednesday",time:"3:15 PM – 4:15 PM",capacity:12},{id:"clontarf-34-fri",day:"Friday",time:"3:15 PM – 4:15 PM",capacity:12}],"Fifth and Sixth Class":[{id:"clontarf-56-mon",day:"Monday",time:"4:15 PM – 5:15 PM",capacity:12},{id:"clontarf-56-tue",day:"Tuesday",time:"4:15 PM – 5:15 PM",capacity:6},{id:"clontarf-56-wed",day:"Wednesday",time:"4:15 PM – 5:15 PM",capacity:12},{id:"clontarf-56-fri",day:"Friday",time:"4:15 PM – 5:15 PM",capacity:12}]},Currenagh:null};function getPricingTier(now=new Date){return now<=EARLY_BIRD_CUTOFF_DATE?"earlyBird":"standard"}function getChildDisplayPrice(index,tier){const key=`child${Math.min(index,3)}`;return PRICING_DISPLAY[tier][key]}function getSlotLabel(venue,classGroup,slotId){if(!venue||!classGroup||!slotId)return"—";const slot=((SCHEDULE[venue]||{})[classGroup]||[]).find(s=>s.id===slotId);return slot?`${slot.day}  ${slot.time}`:slotId}function PaymentTypeSelector({paymentType:paymentType,onChange:onChange,pricingTier:pricingTier}){if("earlyBird"!==pricingTier)return null;const sel=v=>({display:"flex",flexDirection:"column",gap:6,padding:"16px 14px",border:paymentType===v?"2px solid var(--ta-navy)":"1.5px solid var(--ta-grey-200)",borderRadius:"var(--ta-radius-sm)",cursor:"pointer",background:paymentType===v?"var(--ta-navy-light)":"upfront"===v?"var(--ta-gold-light)":"var(--ta-white)",transition:"all var(--ta-transition)"});return React.createElement("div",{className:"ta-card"},React.createElement("div",{className:"ta-card-title"},React.createElement("span",{className:"ta-step"},"1")," Payment Option"),React.createElement("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}},React.createElement("label",{style:sel("upfront")},React.createElement("input",{type:"radio",name:"pt",checked:"upfront"===paymentType,onChange:()=>onChange("upfront"),style:{position:"absolute",opacity:0,width:0,height:0}}),React.createElement("span",{style:{fontWeight:700,color:"var(--ta-navy)"}},"Pay in Full"),React.createElement("span",{style:{fontSize:".85rem",fontWeight:600}},"€589 one-time per child"),React.createElement("span",{style:{fontSize:".78rem",color:"var(--ta-gold-dark)"}},"Save €26 — early bird only")),React.createElement("label",{style:sel("monthly")},React.createElement("input",{type:"radio",name:"pt",checked:"monthly"===paymentType,onChange:()=>onChange("monthly"),style:{position:"absolute",opacity:0,width:0,height:0}}),React.createElement("span",{style:{fontWeight:700,color:"var(--ta-navy)"}},"Monthly Payments"),React.createElement("span",{style:{fontSize:".85rem",fontWeight:600}},"10 payments of €61.50"),React.createElement("span",{style:{fontSize:".78rem",color:"var(--ta-grey-600)"}},"€615 total for first child"))),"upfront"===paymentType&&React.createElement("div",{className:"ta-alert ta-alert-info",style:{marginTop:14,marginBottom:0}},React.createElement("span",null,"🌟"),React.createElement("span",null,React.createElement("strong",null,"Early Bird Full Payment")," — €589 per child (3rd free), one payment. Available until ",React.createElement("strong",null,"1 Aug 2026"),".")))}function ParentForm({parent:parent,onChange:onChange,errors:errors}){const handle=field=>e=>onChange({...parent,[field]:e.target.value});return React.createElement("div",{className:"ta-card"},React.createElement("div",{className:"ta-card-title"},React.createElement("span",{className:"ta-step"},"1"),"Your Details"),React.createElement("div",{className:"ta-form-row"},React.createElement("div",{className:"ta-form-group"},React.createElement("label",{className:"ta-label"},"Full Name ",React.createElement("span",{className:"ta-req"},"*")),React.createElement("input",{type:"text",className:"ta-ctrl"+(errors.name?" ta-err":""),value:parent.name,onChange:handle("name"),placeholder:"e.g. Jane Murphy",autoComplete:"name"}),errors.name&&React.createElement("p",{className:"ta-field-err"},"⚠ ",errors.name)),React.createElement("div",{className:"ta-form-group"},React.createElement("label",{className:"ta-label"},"Phone Number ",React.createElement("span",{className:"ta-req"},"*")),React.createElement("input",{type:"tel",className:"ta-ctrl"+(errors.phone?" ta-err":""),value:parent.phone,onChange:handle("phone"),placeholder:"e.g. 087 123 4567",autoComplete:"tel"}),errors.phone&&React.createElement("p",{className:"ta-field-err"},"⚠ ",errors.phone))),React.createElement("div",{className:"ta-form-group"},React.createElement("label",{className:"ta-label"},"Email Address ",React.createElement("span",{className:"ta-req"},"*")),React.createElement("input",{type:"email",className:"ta-ctrl"+(errors.email?" ta-err":""),value:parent.email,onChange:handle("email"),placeholder:"e.g. jane@example.com",autoComplete:"email"}),errors.email&&React.createElement("p",{className:"ta-field-err"},"⚠ ",errors.email)))}function ChildForm({index:index,child:child,venue:venue,availability:availability,pricingTier:pricingTier,displayPrice:displayPrice,onChange:onChange,onRemove:onRemove,errors:errors,canRemove:canRemove}){const childNumber=index+1,isFree=3===childNumber,label=1===childNumber?"1st Child":2===childNumber?"2nd Child":"3rd Child",venueSlots=venue&&SCHEDULE[venue]&&SCHEDULE[venue][child.classGroup]||[],handle=field=>e=>{const updated={...child,[field]:e.target.value};"classGroup"===field&&(updated.slotId=""),onChange(updated)},availStatus=slotId=>availability&&child.classGroup&&(availability[child.classGroup]||{})[slotId]||null;return React.createElement("div",{className:"ta-child-card"},React.createElement("div",{className:"ta-child-hdr"},React.createElement("div",{className:"ta-child-ttl"},"🎾 ",label,isFree&&React.createElement("span",{className:"ta-free-badge"},"FREE")),React.createElement("div",{style:{display:"flex",alignItems:"center",gap:12}},!isFree&&displayPrice&&React.createElement("div",{className:"ta-price-tag"},null!==displayPrice.monthly?React.createElement(React.Fragment,null,React.createElement("strong",null,"€",displayPrice.monthly.toFixed(2),"/mo"),React.createElement("span",null,"€",displayPrice.total," total")):React.createElement("strong",null,"€",displayPrice.total," upfront")),canRemove&&React.createElement("button",{type:"button",className:"ta-remove-btn",onClick:onRemove,title:"Remove child"},"✕"))),React.createElement("div",{className:"ta-form-row"},React.createElement("div",{className:"ta-form-group"},React.createElement("label",{className:"ta-label"},"First Name ",React.createElement("span",{className:"ta-req"},"*")),React.createElement("input",{type:"text",className:"ta-ctrl"+(errors.firstName?" ta-err":""),value:child.firstName,onChange:handle("firstName"),placeholder:"First name"}),errors.firstName&&React.createElement("p",{className:"ta-field-err"},"⚠ ",errors.firstName)),React.createElement("div",{className:"ta-form-group"},React.createElement("label",{className:"ta-label"},"Surname ",React.createElement("span",{className:"ta-req"},"*")),React.createElement("input",{type:"text",className:"ta-ctrl"+(errors.lastName?" ta-err":""),value:child.lastName,onChange:handle("lastName"),placeholder:"Surname"}),errors.lastName&&React.createElement("p",{className:"ta-field-err"},"⚠ ",errors.lastName))),React.createElement("div",{className:"ta-form-group"},React.createElement("label",{className:"ta-label"},"School Class Group ",React.createElement("span",{className:"ta-req"},"*")),React.createElement("select",{className:"ta-ctrl"+(errors.classGroup?" ta-err":""),value:child.classGroup,onChange:handle("classGroup"),disabled:!venue||"Currenagh"===venue},React.createElement("option",{value:""},"— Select class group —"),CLASS_GROUPS.map(g=>React.createElement("option",{key:g,value:g},g))),errors.classGroup&&React.createElement("p",{className:"ta-field-err"},"⚠ ",errors.classGroup)),child.classGroup&&venueSlots.length>0&&React.createElement("div",{className:"ta-form-group"},React.createElement("label",{className:"ta-label"},"Day & Time Slot ",React.createElement("span",{className:"ta-req"},"*")),React.createElement("div",{className:"ta-slot-grid"},venueSlots.map(slot=>{const avail=availStatus(slot.id),isFull=!!avail&&avail.full,count=avail?avail.available:null,isLow=!isFull&&null!==count&&count<=3;return React.createElement("div",{className:"ta-slot-opt",key:slot.id},React.createElement("input",{type:"radio",id:`slot-${index}-${slot.id}`,name:`slot-${index}`,value:slot.id,checked:child.slotId===slot.id,onChange:()=>!isFull&&onChange({...child,slotId:slot.id}),disabled:isFull}),React.createElement("label",{htmlFor:`slot-${index}-${slot.id}`,className:"ta-slot-lbl"+(isFull?" ta-full":"")},React.createElement("span",{className:"ta-slot-day"},slot.day),React.createElement("span",{className:"ta-slot-time"},slot.time),avail&&React.createElement("span",{className:"ta-slot-avail "+(isFull?"ta-avail-full":isLow?"ta-avail-low":"ta-avail-ok")},isFull?"Fully booked":isLow?`${count} place${1===count?"":"s"} left`:`${count} available`)))})),errors.slotId&&!child.slotId&&React.createElement("p",{className:"ta-field-err"},"⚠ ",errors.slotId),child.slotId&&availStatus(child.slotId)&&availStatus(child.slotId).full&&React.createElement("div",{className:"ta-alert ta-alert-err",style:{marginTop:8}},React.createElement("span",null,"⛔"),React.createElement("span",null,"This slot is ",React.createElement("strong",null,"fully booked"),". Please choose another slot or"," ",React.createElement("a",{href:"mailto:info@tennisacademy.ie"},"get in touch"),"."))),React.createElement("div",{className:"ta-form-group"},React.createElement("label",{className:"ta-label"},"Medical / Health Notes ",React.createElement("em",{style:{fontWeight:400}},"(optional)")),React.createElement("textarea",{className:"ta-ctrl",value:child.medicalNotes,onChange:handle("medicalNotes"),placeholder:"Medical conditions or health info…",rows:2})),React.createElement("div",{className:"ta-form-group",style:{marginBottom:0}},React.createElement("label",{className:"ta-label"},"Additional Notes ",React.createElement("em",{style:{fontWeight:400}},"(optional)")),React.createElement("textarea",{className:"ta-ctrl",value:child.parentNotes,onChange:handle("parentNotes"),placeholder:"Anything else we should know…",rows:2})))}function OrderSummary({parent:parent,venue:venue,children:children,pricingTier:pricingTier,paymentType:paymentType}){if(!children.length)return null;const isUpfront="upfront"===paymentType,isEB="earlyBird"===pricingTier,dTier=isUpfront?"upfrontEarlyBird":pricingTier;let tot=0,mo=0;return React.createElement("div",{className:"ta-summary"},React.createElement("h2",null,"📋 Order Summary"),React.createElement("div",{className:"ta-sum-sec"},React.createElement("div",{className:"ta-sum-lbl"},"Parent / Guardian"),React.createElement("div",{className:"ta-sum-val"},parent.name||"—"),React.createElement("div",{className:"ta-sum-val",style:{fontSize:".82rem",opacity:.7}},parent.email,parent.phone?` · ${parent.phone}`:"")),React.createElement("div",{className:"ta-sum-sec"},React.createElement("div",{className:"ta-sum-lbl"},"Venue"),React.createElement("div",{className:"ta-sum-val"},venue||"—")),React.createElement("div",{className:"ta-sum-sec"},React.createElement("div",{className:"ta-sum-lbl"},"Pricing"),React.createElement("div",{className:"ta-sum-val"},React.createElement("span",{style:{background:isUpfront||isEB?"#c9963a":"rgba(255,255,255,.2)",color:"#fff",fontSize:".75rem",fontWeight:700,padding:"2px 8px",borderRadius:20}},isUpfront?"Pay in Full":isEB?"Early Bird":"Standard"),isUpfront&&React.createElement("span",{style:{fontSize:".78rem",opacity:.6,marginLeft:8}},"One-time"),!isUpfront&&isEB&&React.createElement("span",{style:{fontSize:".78rem",opacity:.6,marginLeft:8}},"Until 1 Aug"))),React.createElement("hr",{className:"ta-sum-div"}),children.map((child,i)=>{const n=i+1,isFr=3===n,price=getChildDisplayPrice(n,dTier),slot=getSlotLabel(venue,child.classGroup,child.slotId);return isFr||(tot+=price.total,null!==price.monthly&&(mo+=price.monthly)),React.createElement("div",{className:"ta-sum-child",key:i},React.createElement("div",{className:"ta-sum-child-hdr"},React.createElement("span",{className:"ta-sum-child-name"},child.firstName||"—"," ",child.lastName),React.createElement("span",{className:"ta-sum-child-price"},isFr?React.createElement("span",{style:{color:"#86efac"}},"FREE"):isUpfront?`€${price.total}`:`€${price.monthly.toFixed(2)}/mo`)),React.createElement("div",{className:"ta-sum-child-detail"},child.classGroup||"—"," · ",slot),!isFr&&!isUpfront&&React.createElement("div",{className:"ta-sum-child-detail",style:{marginTop:2}},"€",price.total," total"))}),React.createElement("hr",{className:"ta-sum-div"}),isUpfront?React.createElement("div",{className:"ta-sum-total-row"},React.createElement("div",null,React.createElement("div",{className:"ta-sum-total-lbl"},"Total due today"),React.createElement("div",{style:{fontSize:".75rem",color:"rgba(255,255,255,.4)",marginTop:2}},"One-time · full season")),React.createElement("div",null,React.createElement("div",{className:"ta-sum-total-amt"},"€",tot.toFixed(2)))):React.createElement("div",{className:"ta-sum-total-row"},React.createElement("div",null,React.createElement("div",{className:"ta-sum-total-lbl"},"Monthly payment"),React.createElement("div",{style:{fontSize:".75rem",color:"rgba(255,255,255,.4)",marginTop:2}},10," payments · Sep – Jun")),React.createElement("div",null,React.createElement("div",{className:"ta-sum-total-amt"},"€",(Math.round(100*mo)/100).toFixed(2)),React.createElement("div",{className:"ta-sum-monthly-note"},"Season total: €",tot.toFixed(2)))))}function SuccessPage({onBack:onBack}){return React.createElement("div",{className:"ta-result"},React.createElement("div",{className:"ta-result-card"},React.createElement("div",{className:"ta-result-icon"},"🎉"),React.createElement("h1",null,"You're all booked!"),React.createElement("p",null,"Thank you for registering. Your payment was successful and your children are enrolled for the season."),React.createElement("p",null,"A confirmation email will be sent to you shortly."),React.createElement("div",{className:"ta-action-row"},React.createElement("button",{type:"button",className:"ta-btn ta-btn-gold",onClick:onBack},"Back to Home"))))}function CancelPage({onBack:onBack}){return React.createElement("div",{className:"ta-result"},React.createElement("div",{className:"ta-result-card"},React.createElement("div",{className:"ta-result-icon"},"↩️"),React.createElement("h1",null,"Payment Cancelled"),React.createElement("p",null,"No payment has been taken. Your booking has not been confirmed."),React.createElement("p",null,"Go back and try again, or ",React.createElement("a",{href:"mailto:info@tennisacademy.ie"},"get in touch")," if you need help."),React.createElement("div",{className:"ta-action-row"},React.createElement("button",{type:"button",className:"ta-btn ta-btn-gold",onClick:onBack},"Try Again"))))}function emptyChild(){return{firstName:"",lastName:"",classGroup:"",slotId:"",medicalNotes:"",parentNotes:""}}function BookingPage(){const[parent,setParent]=useState({name:"",email:"",phone:""}),[venue,setVenue]=useState(""),[children,setChildren]=useState([emptyChild()]),[availability,setAvailability]=useState({}),[loadingAvail,setLoadingAvail]=useState(!1),[submitting,setSubmitting]=useState(!1),[apiErrors,setApiErrors]=useState([]),[fieldErrors,setFieldErrors]=useState({}),[paymentType,setPaymentType]=useState("monthly"),[page,setPage]=useState(()=>{const params=new URLSearchParams(window.location.search);return"1"===params.get("ta_success")?"success":"1"===params.get("ta_cancelled")?"cancel":"form"});useEffect(()=>{const params=new URLSearchParams(window.location.search);if(params.has("ta_success")||params.has("ta_cancelled")||params.has("session_id")){params.delete("ta_success"),params.delete("ta_cancelled"),params.delete("session_id");const newUrl=window.location.pathname+(params.toString()?"?"+params.toString():"");window.history.replaceState({},"",newUrl)}},[]);const pricingTier=getPricingTier(),isEarlyBird="earlyBird"===pricingTier,fetchAvailability=useCallback(async v=>{if(v&&SCHEDULE[v])if(null!==SCHEDULE[v]){setLoadingAvail(!0);try{const res=await fetch(`${TENNIS_API_URL}/api/availability?venue=${encodeURIComponent(v)}`),data=await res.json();setAvailability(data)}catch{setAvailability({})}finally{setLoadingAvail(!1)}}else setAvailability({tbc:!0});else setAvailability({})},[]);if(useEffect(()=>{fetchAvailability(venue)},[venue,fetchAvailability]),"success"===page)return React.createElement(SuccessPage,{onBack:()=>setPage("form")});if("cancel"===page)return React.createElement(CancelPage,{onBack:()=>setPage("form")});const isCurrenagh="Currenagh"===venue,showChildren=venue&&!isCurrenagh,hasFullSlot=children.some(c=>c.slotId&&(availability[c.classGroup]||{})[c.slotId]?.full),formComplete=parent.name.trim()&&parent.email.trim()&&parent.phone.trim()&&venue&&!isCurrenagh&&children.every(c=>c.firstName&&c.lastName&&c.classGroup&&c.slotId),canSubmit=formComplete&&!hasFullSlot&&!submitting,showPayNow=parent.name.trim()&&parent.email.trim()&&parent.phone.trim()&&venue&&!isCurrenagh,cutoffStr=EARLY_BIRD_CUTOFF_DATE.toLocaleDateString("en-IE",{day:"numeric",month:"long",year:"numeric"});return React.createElement("div",null,React.createElement("header",{className:"ta-header"},React.createElement("div",{className:"ta-container"},React.createElement("div",{className:"ta-logo-row"},React.createElement("span",{className:"ta-logo-icon"},"🎾"),React.createElement("div",null,React.createElement("h1",null,"Tennis Academy"),React.createElement("p",{className:"ta-tagline"},"Registration — September to June"))))),React.createElement("div",{className:"ta-main"},React.createElement("div",{className:"ta-container"},React.createElement("div",{className:"ta-pricing-banner"},React.createElement("span",{className:"ta-badge"+(isEarlyBird?"":" ta-badge-std")},isEarlyBird?"🌟 Early Bird Pricing":"Standard Pricing"),React.createElement("p",null,isEarlyBird?React.createElement("span",null,"Early bird rates apply until ",React.createElement("strong",null,cutoffStr),". Pay upfront before August 1 for only ",React.createElement("strong",null,"€589")," for each of the first two children and the third free, or pay over ",React.createElement("strong",null,"10 monthly payments")," — ",React.createElement("strong",null,"€615")," for the first child, ",React.createElement("strong",null,"€600")," for the second and the third child free."):React.createElement("span",null,"Standard rates apply after ",cutoffStr,". Season fee is ",React.createElement("strong",null,"€640")," for the first child, paid over ",React.createElement("strong",null,"10 monthly payments"),"."))),React.createElement("form",{onSubmit:async function(e){if(e.preventDefault(),setApiErrors([]),!function(){const errs={},pErrs={};parent.name.trim()||(pErrs.name="Name is required"),parent.email.trim()?/\S+@\S+\.\S+/.test(parent.email)||(pErrs.email="Enter a valid email"):pErrs.email="Email is required",parent.phone.trim()||(pErrs.phone="Phone number is required"),Object.keys(pErrs).length&&(errs.parent=pErrs),venue||(errs.venue="Please select a venue");const childErrs=children.map(c=>{const ce={};return c.firstName.trim()||(ce.firstName="Required"),c.lastName.trim()||(ce.lastName="Required"),c.classGroup||(ce.classGroup="Required"),c.slotId||(ce.slotId="Please select a time slot"),ce});return childErrs.some(ce=>Object.keys(ce).length)&&(errs.children=childErrs),setFieldErrors(errs),0===Object.keys(errs).length}()){const el=document.querySelector("#ta-bw .ta-err, #ta-bw .ta-field-err");return void(el&&el.scrollIntoView({behavior:"smooth",block:"center"}))}setSubmitting(!0);try{const base=window.location.origin+window.location.pathname,successUrl=base+"?ta_success=1&session_id={CHECKOUT_SESSION_ID}",cancelUrl=base+"?ta_cancelled=1",res=await fetch(`${TENNIS_API_URL}/api/create-checkout-session`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({parent:parent,venue:venue,children:children,paymentType:paymentType,successUrl:successUrl,cancelUrl:cancelUrl})}),data=await res.json();if(!res.ok)return setApiErrors(data.errors||["Something went wrong. Please try again."]),setSubmitting(!1),void document.getElementById("ta-bw").scrollIntoView({behavior:"smooth",block:"start"});window.location.href=data.url}catch{setApiErrors(["Network error — please check your connection and try again."]),setSubmitting(!1)}},noValidate:!0},apiErrors.length>0&&React.createElement("div",{className:"ta-alert ta-alert-err"},React.createElement("span",null,"⛔"),React.createElement("div",null,apiErrors.map((err,i)=>React.createElement("p",{key:i,style:{margin:0}},err)))),React.createElement(PaymentTypeSelector,{paymentType:paymentType,onChange:setPaymentType,pricingTier:pricingTier}),React.createElement(ParentForm,{parent:parent,onChange:setParent,errors:fieldErrors.parent||{}}),React.createElement("div",{className:"ta-card"},React.createElement("div",{className:"ta-card-title"},React.createElement("span",{className:"ta-step"},"2"),"Select Venue"),React.createElement("div",{className:"ta-form-group",style:{marginBottom:0}},React.createElement("label",{className:"ta-label"},"Venue ",React.createElement("span",{className:"ta-req"},"*")),React.createElement("select",{className:"ta-ctrl"+(fieldErrors.venue?" ta-err":""),value:venue,onChange:function(e){setVenue(e.target.value),setChildren(prev=>prev.map(c=>({...c,classGroup:"",slotId:""}))),setApiErrors([])}},React.createElement("option",{value:""},"— Select a venue —"),VENUES.map(v=>React.createElement("option",{key:v,value:v},v))),fieldErrors.venue&&React.createElement("p",{className:"ta-field-err"},"⚠ ",fieldErrors.venue)),isCurrenagh&&React.createElement("div",{className:"ta-venue-tbc"},React.createElement("h3",null,"Schedule Coming Soon"),React.createElement("p",null,"The Currenagh schedule is yet to be confirmed.",React.createElement("br",null),"Please check back soon or ",React.createElement("a",{href:"mailto:info@tennisacademy.ie"},"get in touch")," to register your interest.")),loadingAvail&&React.createElement("p",{style:{marginTop:12,color:"var(--ta-grey-400)",fontSize:".875rem"}},"Checking availability…")),showChildren&&React.createElement("div",{className:"ta-card"},React.createElement("div",{className:"ta-card-title"},React.createElement("span",{className:"ta-step"},"3"),"Children",children.length<3&&React.createElement("span",{style:{fontSize:".78rem",fontWeight:400,color:"var(--ta-grey-400)",marginLeft:6}},"(up to 3 — 3rd child is free)")),children.map((child,i)=>{const n=i+1,dp=3===n?{total:0,monthly:null}:getChildDisplayPrice(n,"upfront"===paymentType?"upfrontEarlyBird":pricingTier);return React.createElement(ChildForm,{key:i,index:i,child:child,venue:venue,availability:availability,pricingTier:pricingTier,displayPrice:dp,onChange:updated=>function(i,updated){setChildren(prev=>prev.map((c,idx)=>idx===i?updated:c))}(i,updated),onRemove:()=>setChildren(prev=>prev.filter((_,idx)=>idx!==i)),errors:(fieldErrors.children||[])[i]||{},canRemove:children.length>1})}),showPayNow&&React.createElement("div",{style:{marginBottom:10}},React.createElement("button",{type:"submit",className:"ta-btn ta-btn-gold ta-btn-full",disabled:!canSubmit},submitting?React.createElement(React.Fragment,null,React.createElement("span",{className:"ta-spin"}),"Redirecting to payment…"):React.createElement(React.Fragment,null,"Pay Now →"))),children.length<3&&React.createElement("div",{className:"ta-add-child-row"},React.createElement("button",{type:"button",className:"ta-btn ta-btn-outline",onClick:()=>setChildren(prev=>[...prev,emptyChild()])},"+ Add Another Child",2===children.length&&React.createElement("span",{style:{fontSize:".78rem",marginLeft:4,opacity:.7}},"(3rd child is free!)")))),formComplete&&!hasFullSlot&&React.createElement(React.Fragment,null,React.createElement(OrderSummary,{parent:parent,venue:venue,children:children,pricingTier:pricingTier,paymentType:paymentType}),React.createElement("div",{style:{marginBottom:12}},React.createElement("div",{className:"ta-alert ta-alert-info"},React.createElement("span",null,"🔒"),React.createElement("span",null,"You'll be taken to ",React.createElement("strong",null,"Stripe's secure checkout")," to complete payment. Your card details are never stored on our servers.","upfront"===paymentType?React.createElement(React.Fragment,null," You'll be charged ",React.createElement("strong",null,"once")," for the full season."):React.createElement(React.Fragment,null," You'll be charged monthly for ",React.createElement("strong",null,10," months"),".")))),React.createElement("button",{type:"submit",className:"ta-btn ta-btn-gold ta-btn-lg ta-btn-full",disabled:!canSubmit},submitting?React.createElement(React.Fragment,null,React.createElement("span",{className:"ta-spin"}),"Redirecting to payment…"):React.createElement(React.Fragment,null,"Proceed to Secure Payment →"))),!formComplete&&venue&&!isCurrenagh&&React.createElement("p",{style:{textAlign:"center",color:"var(--ta-grey-400)",fontSize:".875rem",marginTop:12}},"Complete all required fields above to see your order summary and payment button.")))),React.createElement("footer",{className:"ta-footer"},React.createElement("p",null,"Tennis Academy © ",(new Date).getFullYear()," · 10-month season · September to June"),"1"===new URLSearchParams(window.location.search).get("admin")&&React.createElement("div",{style:{marginTop:12}},React.createElement("a",{href:`${TENNIS_API_URL}/api/admin/export?key=${ADMIN_SECRET}`,style:{background:"#c9963a",color:"#fff",padding:"8px 18px",borderRadius:6,fontSize:".8rem",fontWeight:700,textDecoration:"none"}},"⬇ Export Bookings CSV"))))}ReactDOM.createRoot(document.getElementById("ta-root")).render(React.createElement(BookingPage,null));</script>
-</body>
-</html>
+ </div>
+ <script>
+const TENNIS_API_URL = 'https://tennis-academy-dzrw.onrender.com';
+const ADMIN_SECRET = 'edOulgm-z_dULoVY910MV_dk0n7za-H0';
+const {
+  useState,
+  useEffect,
+  useCallback
+} = React;
+const MONTHS = 10;
+const EARLY_BIRD_CUTOFF_DATE = new Date('2026-08-01T23:59:59');
+const PRICING_DISPLAY = {
+  earlyBird: {
+    child1: {
+      total: 615,
+      monthly: 61.50
+    },
+    child2: {
+      total: 600,
+      monthly: 60.00
+    },
+    child3: {
+      total: 0,
+      monthly: 0
+    }
+  },
+  standard: {
+    child1: {
+      total: 640,
+      monthly: 64.00
+    },
+    child2: {
+      total: 615,
+      monthly: 61.50
+    },
+    child3: {
+      total: 0,
+      monthly: 0
+    }
+  },
+  upfrontEarlyBird: {
+    child1: {
+      total: 589,
+      monthly: null
+    },
+    child2: {
+      total: 589,
+      monthly: null
+    },
+    child3: {
+      total: 0,
+      monthly: null
+    }
+  }
+};
+const VENUES = ['Clontarf', 'Curragha'];
+const CLASS_GROUPS = ['Junior and Senior Infants', 'First and Second Class', 'Third and Fourth Class', 'Fifth and Sixth Class'];
+const SCHEDULE = {
+  Clontarf: {
+    'Junior and Senior Infants': [{
+      id: 'clontarf-jsi-mon',
+      day: 'Monday',
+      time: '1:30 PM - 2:15 PM',
+      capacity: 10
+    }, {
+      id: 'clontarf-jsi-tue',
+      day: 'Tuesday',
+      time: '1:30 PM - 2:15 PM',
+      capacity: 10
+    }, {
+      id: 'clontarf-jsi-wed',
+      day: 'Wednesday',
+      time: '1:30 PM - 2:15 PM',
+      capacity: 10
+    }, {
+      id: 'clontarf-jsi-fri',
+      day: 'Friday',
+      time: '1:40 PM - 2:25 PM',
+      capacity: 10
+    }],
+    'First and Second Class': [{
+      id: 'clontarf-12-mon',
+      day: 'Monday',
+      time: '2:30 PM - 3:15 PM',
+      capacity: 12
+    }, {
+      id: 'clontarf-12-tue',
+      day: 'Tuesday',
+      time: '2:30 PM - 3:15 PM',
+      capacity: 12
+    }, {
+      id: 'clontarf-12-wed',
+      day: 'Wednesday',
+      time: '2:30 PM - 3:15 PM',
+      capacity: 12
+    }, {
+      id: 'clontarf-12-fri',
+      day: 'Friday',
+      time: '2:30 PM - 3:15 PM',
+      capacity: 12
+    }],
+    'Third and Fourth Class': [{
+      id: 'clontarf-34-mon',
+      day: 'Monday',
+      time: '3:15 PM - 4:15 PM',
+      capacity: 12
+    }, {
+      id: 'clontarf-34-tue',
+      day: 'Tuesday',
+      time: '3:15 PM - 4:15 PM',
+      capacity: 12
+    }, {
+      id: 'clontarf-34-wed',
+      day: 'Wednesday',
+      time: '3:15 PM - 4:15 PM',
+      capacity: 12
+    }, {
+      id: 'clontarf-34-fri',
+      day: 'Friday',
+      time: '3:15 PM - 4:15 PM',
+      capacity: 12
+    }],
+    'Fifth and Sixth Class': [{
+      id: 'clontarf-56-mon',
+      day: 'Monday',
+      time: '4:15 PM - 5:15 PM',
+      capacity: 12
+    }, {
+      id: 'clontarf-56-tue',
+      day: 'Tuesday',
+      time: '4:15 PM - 5:15 PM',
+      capacity: 12
+    }, {
+      id: 'clontarf-56-wed',
+      day: 'Wednesday',
+      time: '4:15 PM - 5:15 PM',
+      capacity: 12
+    }, {
+      id: 'clontarf-56-fri',
+      day: 'Friday',
+      time: '4:15 PM - 5:15 PM',
+      capacity: 12
+    }]
+  },
+  Curragha: null
+};
+const COLLECTION_SCHOOLS = [{
+  name: 'Belgrove IGS',
+  times: ['1:15 PM', '2:15 PM']
+}, {
+  name: 'Belgrove JBS',
+  times: ['1:20 PM', '2:20 PM']
+}];
+function getPricingTier(now = new Date()) {
+  return now <= EARLY_BIRD_CUTOFF_DATE ? 'earlyBird' : 'standard';
+}
+function getChildDisplayPrice(index, tier) {
+  const key = `child${Math.min(index, 3)}`;
+  return PRICING_DISPLAY[tier][key];
+}
+function getSlotLabel(venue, classGroup, slotId) {
+  if (!venue || !classGroup || !slotId) return '-';
+  const slots = (SCHEDULE[venue] || {})[classGroup] || [];
+  const slot = slots.find(s => s.id === slotId);
+  return slot ? `${slot.day}  ${slot.time}` : slotId;
+}
+function PaymentTypeSelector({
+  paymentType,
+  onChange,
+  pricingTier
+}) {
+  if (pricingTier !== 'earlyBird') return null;
+  const sel = v => ({
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 6,
+    padding: '16px 14px',
+    border: paymentType === v ? '2px solid var(--ta-navy)' : '1.5px solid var(--ta-grey-200)',
+    borderRadius: 'var(--ta-radius-sm)',
+    cursor: 'pointer',
+    background: paymentType === v ? 'var(--ta-navy-light)' : v === 'upfront' ? 'var(--ta-gold-light)' : 'var(--ta-white)',
+    transition: 'all var(--ta-transition)'
+  });
+  return /*#__PURE__*/React.createElement("div", {
+    className: "ta-card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "ta-card-title"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "ta-step"
+  }, "1"), " Payment Option"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr',
+      gap: 12
+    }
+  }, /*#__PURE__*/React.createElement("label", {
+    style: sel('upfront')
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "radio",
+    name: "pt",
+    checked: paymentType === 'upfront',
+    onChange: () => onChange('upfront'),
+    style: {
+      position: 'absolute',
+      opacity: 0,
+      width: 0,
+      height: 0
+    }
+  }), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontWeight: 700,
+      color: 'var(--ta-navy)'
+    }
+  }, "Pay in Full"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: '.85rem',
+      fontWeight: 600
+    }
+  }, "589 euro one-time per child"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: '.78rem',
+      color: 'var(--ta-gold-dark)'
+    }
+  }, "Save 26 euro - early bird only")), /*#__PURE__*/React.createElement("label", {
+    style: sel('monthly')
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "radio",
+    name: "pt",
+    checked: paymentType === 'monthly',
+    onChange: () => onChange('monthly'),
+    style: {
+      position: 'absolute',
+      opacity: 0,
+      width: 0,
+      height: 0
+    }
+  }), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontWeight: 700,
+      color: 'var(--ta-navy)'
+    }
+  }, "Monthly Payments"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: '.85rem',
+      fontWeight: 600
+    }
+  }, "10 payments of 61.50 euro"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: '.78rem',
+      color: 'var(--ta-grey-600)'
+    }
+  }, "615 euro total for first child"))), paymentType === 'upfront' && /*#__PURE__*/React.createElement("div", {
+    className: "ta-alert ta-alert-info",
+    style: {
+      marginTop: 14,
+      marginBottom: 0
+    }
+  }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Early Bird Full Payment"), " - 589 euro per child (3rd free), one payment. Available until ", /*#__PURE__*/React.createElement("strong", null, "1 Aug 2026"), ".")));
+}
+function ParentForm({
+  parent,
+  onChange,
+  errors
+}) {
+  const handle = field => e => onChange({
+    ...parent,
+    [field]: e.target.value
+  });
+  return /*#__PURE__*/React.createElement("div", {
+    className: "ta-card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "ta-card-title"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "ta-step"
+  }, "1"), "Your Details"), /*#__PURE__*/React.createElement("div", {
+    className: "ta-form-row"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "ta-form-group"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "ta-label"
+  }, "Full Name ", /*#__PURE__*/React.createElement("span", {
+    className: "ta-req"
+  }, "*")), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    className: `ta-ctrl${errors.name ? ' ta-err' : ''}`,
+    value: parent.name,
+    onChange: handle('name'),
+    placeholder: "e.g. Jane Murphy",
+    autoComplete: "name"
+  }), errors.name && /*#__PURE__*/React.createElement("p", {
+    className: "ta-field-err"
+  }, " ", errors.name)), /*#__PURE__*/React.createElement("div", {
+    className: "ta-form-group"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "ta-label"
+  }, "Phone Number ", /*#__PURE__*/React.createElement("span", {
+    className: "ta-req"
+  }, "*")), /*#__PURE__*/React.createElement("input", {
+    type: "tel",
+    className: `ta-ctrl${errors.phone ? ' ta-err' : ''}`,
+    value: parent.phone,
+    onChange: handle('phone'),
+    placeholder: "e.g. 087 123 4567",
+    autoComplete: "tel"
+  }), errors.phone && /*#__PURE__*/React.createElement("p", {
+    className: "ta-field-err"
+  }, " ", errors.phone))), /*#__PURE__*/React.createElement("div", {
+    className: "ta-form-group"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "ta-label"
+  }, "Additional Phone Number"), /*#__PURE__*/React.createElement("input", {
+    type: "tel",
+    className: "ta-ctrl",
+    value: parent.phone2,
+    onChange: handle('phone2'),
+    placeholder: "e.g. 01 234 5678",
+    autoComplete: "tel"
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "ta-form-group"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "ta-label"
+  }, "Email Address ", /*#__PURE__*/React.createElement("span", {
+    className: "ta-req"
+  }, "*")), /*#__PURE__*/React.createElement("input", {
+    type: "email",
+    className: `ta-ctrl${errors.email ? ' ta-err' : ''}`,
+    value: parent.email,
+    onChange: handle('email'),
+    placeholder: "e.g. jane@example.com",
+    autoComplete: "email"
+  }), errors.email && /*#__PURE__*/React.createElement("p", {
+    className: "ta-field-err"
+  }, " ", errors.email)), /*#__PURE__*/React.createElement("div", {
+    className: "ta-form-group",
+    style: {
+      marginBottom: 0
+    }
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "ta-label"
+  }, "Address"), /*#__PURE__*/React.createElement("textarea", {
+    className: "ta-ctrl",
+    value: parent.address,
+    onChange: handle('address'),
+    placeholder: "Your home address",
+    rows: 2
+  })));
+}
+function ChildForm({
+  index,
+  child,
+  venue,
+  availability,
+  pricingTier,
+  displayPrice,
+  onChange,
+  onRemove,
+  errors,
+  canRemove
+}) {
+  const childNumber = index + 1;
+  const isFree = childNumber === 3;
+  const label = childNumber === 1 ? '1st Child' : childNumber === 2 ? '2nd Child' : '3rd Child';
+  const venueSlots = venue && SCHEDULE[venue] ? SCHEDULE[venue][child.classGroup] || [] : [];
+  const handle = field => e => {
+    const updated = {
+      ...child,
+      [field]: e.target.value
+    };
+    if (field === 'classGroup') updated.slotId = '';
+    onChange(updated);
+  };
+  const availStatus = slotId => availability && child.classGroup ? (availability[child.classGroup] || {})[slotId] || null : null;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "ta-child-card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "ta-child-hdr"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "ta-child-ttl"
+  }, label, isFree && /*#__PURE__*/React.createElement("span", {
+    className: "ta-free-badge"
+  }, "FREE")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 12
+    }
+  }, !isFree && displayPrice && /*#__PURE__*/React.createElement("div", {
+    className: "ta-price-tag"
+  }, displayPrice.monthly !== null ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("strong", null, displayPrice.monthly.toFixed(2), " euro/mo"), /*#__PURE__*/React.createElement("span", null, displayPrice.total, " euro total")) : /*#__PURE__*/React.createElement("strong", null, displayPrice.total, " euro upfront")), canRemove && /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "ta-remove-btn",
+    onClick: onRemove,
+    title: "Remove child"
+  }, "x"))), /*#__PURE__*/React.createElement("div", {
+    className: "ta-form-row"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "ta-form-group"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "ta-label"
+  }, "First Name ", /*#__PURE__*/React.createElement("span", {
+    className: "ta-req"
+  }, "*")), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    className: `ta-ctrl${errors.firstName ? ' ta-err' : ''}`,
+    value: child.firstName,
+    onChange: handle('firstName'),
+    placeholder: "First name"
+  }), errors.firstName && /*#__PURE__*/React.createElement("p", {
+    className: "ta-field-err"
+  }, " ", errors.firstName)), /*#__PURE__*/React.createElement("div", {
+    className: "ta-form-group"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "ta-label"
+  }, "Surname ", /*#__PURE__*/React.createElement("span", {
+    className: "ta-req"
+  }, "*")), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    className: `ta-ctrl${errors.lastName ? ' ta-err' : ''}`,
+    value: child.lastName,
+    onChange: handle('lastName'),
+    placeholder: "Surname"
+  }), errors.lastName && /*#__PURE__*/React.createElement("p", {
+    className: "ta-field-err"
+  }, " ", errors.lastName))), /*#__PURE__*/React.createElement("div", {
+    className: "ta-form-group"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "ta-label"
+  }, "Date of Birth ", /*#__PURE__*/React.createElement("span", {
+    className: "ta-req"
+  }, "*")), /*#__PURE__*/React.createElement("div", {
+    style: { display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }
+  }, (() => {
+    const parts = (child.dateOfBirth || '').split('/');
+    const dd = parts[0] || '', mm = parts[1] || '', yyyy = parts[2] || '';
+    const update = (d, m, y) => onChange({ ...child, dateOfBirth: (d && m && y) ? `${d}/${m}/${y}` : '' });
+    const days = Array.from({ length: 31 }, (_, i) => String(i + 1).padStart(2, '0'));
+    const months = [['01','January'],['02','February'],['03','March'],['04','April'],['05','May'],['06','June'],['07','July'],['08','August'],['09','September'],['10','October'],['11','November'],['12','December']];
+    const years = Array.from({ length: 20 }, (_, i) => String(new Date().getFullYear() - 3 - i));
+    return [
+      /*#__PURE__*/React.createElement("select", { key: 'd', className: `ta-ctrl${errors.dateOfBirth ? ' ta-err' : ''}`, value: dd, onChange: e => update(e.target.value, mm, yyyy) },
+        /*#__PURE__*/React.createElement("option", { value: '' }, 'Day'),
+        days.map(d => /*#__PURE__*/React.createElement("option", { key: d, value: d }, d))
+      ),
+      /*#__PURE__*/React.createElement("select", { key: 'm', className: `ta-ctrl${errors.dateOfBirth ? ' ta-err' : ''}`, value: mm, onChange: e => update(dd, e.target.value, yyyy) },
+        /*#__PURE__*/React.createElement("option", { value: '' }, 'Month'),
+        months.map(([v, l]) => /*#__PURE__*/React.createElement("option", { key: v, value: v }, l))
+      ),
+      /*#__PURE__*/React.createElement("select", { key: 'y', className: `ta-ctrl${errors.dateOfBirth ? ' ta-err' : ''}`, value: yyyy, onChange: e => update(dd, mm, e.target.value) },
+        /*#__PURE__*/React.createElement("option", { value: '' }, 'Year'),
+        years.map(y => /*#__PURE__*/React.createElement("option", { key: y, value: y }, y))
+      )
+    ];
+  })()), errors.dateOfBirth && /*#__PURE__*/React.createElement("p", {
+    className: "ta-field-err"
+  }, " ", errors.dateOfBirth)), /*#__PURE__*/React.createElement("div", {
+    className: "ta-form-group"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "ta-label"
+  }, "School Class Group ", /*#__PURE__*/React.createElement("span", {
+    className: "ta-req"
+  }, "*")), /*#__PURE__*/React.createElement("select", {
+    className: `ta-ctrl${errors.classGroup ? ' ta-err' : ''}`,
+    value: child.classGroup,
+    onChange: handle('classGroup'),
+    disabled: !venue || venue === 'Curragha'
+  }, /*#__PURE__*/React.createElement("option", {
+    value: ""
+  }, "- Select class group -"), CLASS_GROUPS.map(g => /*#__PURE__*/React.createElement("option", {
+    key: g,
+    value: g
+  }, g))), errors.classGroup && /*#__PURE__*/React.createElement("p", {
+    className: "ta-field-err"
+  }, " ", errors.classGroup)), child.classGroup && venueSlots.length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "ta-form-group"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "ta-label"
+  }, "Day & Time Slot ", /*#__PURE__*/React.createElement("span", {
+    className: "ta-req"
+  }, "*")), /*#__PURE__*/React.createElement("div", {
+    className: "ta-slot-grid"
+  }, venueSlots.map(slot => {
+    const avail = availStatus(slot.id);
+    const isFull = avail ? avail.full : false;
+    const count = avail ? avail.available : null;
+    const isLow = !isFull && count !== null && count <= 3;
+    return /*#__PURE__*/React.createElement("div", {
+      className: "ta-slot-opt",
+      key: slot.id
+    }, /*#__PURE__*/React.createElement("input", {
+      type: "radio",
+      id: `slot-${index}-${slot.id}`,
+      name: `slot-${index}`,
+      value: slot.id,
+      checked: child.slotId === slot.id,
+      onChange: () => !isFull && onChange({
+        ...child,
+        slotId: slot.id
+      }),
+      disabled: isFull
+    }), /*#__PURE__*/React.createElement("label", {
+      htmlFor: `slot-${index}-${slot.id}`,
+      className: `ta-slot-lbl${isFull ? ' ta-full' : ''}`
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "ta-slot-day"
+    }, slot.day), /*#__PURE__*/React.createElement("span", {
+      className: "ta-slot-time"
+    }, slot.time), avail && /*#__PURE__*/React.createElement("span", {
+      className: `ta-slot-avail ${isFull ? 'ta-avail-full' : isLow ? 'ta-avail-low' : 'ta-avail-ok'}`
+    }, isFull ? 'Fully booked' : isLow ? `${count} place${count === 1 ? '' : 's'} left` : `${count} available`)));
+  })), errors.slotId && !child.slotId && /*#__PURE__*/React.createElement("p", {
+    className: "ta-field-err"
+  }, " ", errors.slotId), child.slotId && availStatus(child.slotId) && availStatus(child.slotId).full && /*#__PURE__*/React.createElement("div", {
+    className: "ta-alert ta-alert-err",
+    style: {
+      marginTop: 8
+    }
+  }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null, "This slot is ", /*#__PURE__*/React.createElement("strong", null, "fully booked"), ". Please choose another slot or", ' ', /*#__PURE__*/React.createElement("a", {
+    href: "mailto:info@tennisacademy.ie"
+  }, "get in touch"), "."))), /*#__PURE__*/React.createElement("div", {
+    className: "ta-form-group"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "ta-label"
+  }, "Does Your Child Have a Medical Condition?"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      gap: 12,
+      marginTop: 6
+    }
+  }, ['No', 'Yes'].map(val => /*#__PURE__*/React.createElement("label", {
+    key: val,
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flex: 1,
+      cursor: 'pointer',
+      padding: '11px 16px',
+      fontWeight: 600,
+      fontSize: '1rem',
+      border: child.hasMedical === val ? '2px solid var(--ta-navy)' : '1.5px solid var(--ta-grey-200)',
+      borderRadius: 'var(--ta-radius-sm)',
+      background: child.hasMedical === val ? 'var(--ta-navy-light)' : 'var(--ta-white)',
+      transition: 'all var(--ta-transition)'
+    }
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "radio",
+    name: `hasMedical-${index}`,
+    value: val,
+    checked: child.hasMedical === val,
+    onChange: () => onChange({
+      ...child,
+      hasMedical: val,
+      medicalNotes: val === 'No' ? '' : child.medicalNotes
+    }),
+    style: {
+      position: 'absolute',
+      opacity: 0,
+      width: 0,
+      height: 0
+    }
+  }), val))), child.hasMedical === 'Yes' && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 10
+    }
+  }, /*#__PURE__*/React.createElement("textarea", {
+    className: `ta-ctrl${errors.medicalNotes ? ' ta-err' : ''}`,
+    value: child.medicalNotes,
+    onChange: handle('medicalNotes'),
+    placeholder: "Please describe the medical condition...",
+    rows: 3
+  }), errors.medicalNotes && /*#__PURE__*/React.createElement("p", {
+    className: "ta-field-err"
+  }, " ", errors.medicalNotes))), /*#__PURE__*/React.createElement("div", {
+    className: "ta-form-group"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "ta-label"
+  }, "Additional Notes ", /*#__PURE__*/React.createElement("em", {
+    style: {
+      fontWeight: 400
+    }
+  }, "(optional)")), /*#__PURE__*/React.createElement("textarea", {
+    className: "ta-ctrl",
+    value: child.parentNotes,
+    onChange: handle('parentNotes'),
+    placeholder: "Anything else you'd like us to know...",
+    rows: 2
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "ta-form-group",
+    style: {
+      marginBottom: 0
+    }
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "ta-label"
+  }, "How Did You Hear About Us? ", /*#__PURE__*/React.createElement("span", {
+    className: "ta-req"
+  }, "*")), /*#__PURE__*/React.createElement("textarea", {
+    className: `ta-ctrl${errors.howHeardAboutUs ? ' ta-err' : ''}`,
+    value: child.howHeardAboutUs,
+    onChange: handle('howHeardAboutUs'),
+    placeholder: "e.g. friend recommendation, social media, school notice",
+    rows: 2
+  }), errors.howHeardAboutUs && /*#__PURE__*/React.createElement("p", {
+    className: "ta-field-err"
+  }, " ", errors.howHeardAboutUs)));
+}
+function CollectionSection({
+  collection,
+  onChange,
+  collectionError
+}) {
+  const radioStyle = selected => ({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    cursor: 'pointer',
+    padding: '11px 16px',
+    fontWeight: 600,
+    fontSize: '1rem',
+    border: selected ? '2px solid var(--ta-navy)' : '1.5px solid var(--ta-grey-200)',
+    borderRadius: 'var(--ta-radius-sm)',
+    background: selected ? 'var(--ta-navy-light)' : 'var(--ta-white)',
+    transition: 'all var(--ta-transition)'
+  });
+  const timeStyle = selected => ({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    cursor: 'pointer',
+    padding: '10px 14px',
+    fontSize: '.9rem',
+    fontWeight: 600,
+    border: selected ? '2px solid var(--ta-navy)' : '1.5px solid var(--ta-grey-200)',
+    borderRadius: 'var(--ta-radius-sm)',
+    background: selected ? 'var(--ta-navy-light)' : 'var(--ta-white)',
+    transition: 'all var(--ta-transition)'
+  });
+  return /*#__PURE__*/React.createElement("div", {
+    className: "ta-card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "ta-card-title"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "ta-step"
+  }, "4"), "School Collection"), /*#__PURE__*/React.createElement("div", {
+    className: "ta-form-group"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "ta-label"
+  }, "Do you want your child to be collected by us?"), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: '.825rem',
+      color: 'var(--ta-grey-600)',
+      marginBottom: 10,
+      marginTop: 4
+    }
+  }, "Collection available on Monday, Tuesday and Wednesday"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      gap: 12
+    }
+  }, /*#__PURE__*/React.createElement("label", {
+    style: radioStyle(collection.wantsCollection === 'no')
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "radio",
+    name: "wantsCollection",
+    value: "no",
+    checked: collection.wantsCollection === 'no',
+    onChange: () => onChange({
+      ...collection,
+      wantsCollection: 'no',
+      schoolVenue: '',
+      time: ''
+    }),
+    style: {
+      position: 'absolute',
+      opacity: 0,
+      width: 0,
+      height: 0
+    }
+  }), "No"), /*#__PURE__*/React.createElement("label", {
+    style: radioStyle(collection.wantsCollection === 'yes')
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "radio",
+    name: "wantsCollection",
+    value: "yes",
+    checked: collection.wantsCollection === 'yes',
+    onChange: () => onChange({
+      ...collection,
+      wantsCollection: 'yes',
+      schoolVenue: '',
+      time: ''
+    }),
+    style: {
+      position: 'absolute',
+      opacity: 0,
+      width: 0,
+      height: 0
+    }
+  }), "Yes"))), collection.wantsCollection === 'yes' && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "ta-form-group"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "ta-label"
+  }, "Collection School and Time ", /*#__PURE__*/React.createElement("span", {
+    className: "ta-req"
+  }, "*")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 4
+    }
+  }, COLLECTION_SCHOOLS.map(school => /*#__PURE__*/React.createElement("div", {
+    key: school.name,
+    style: {
+      marginBottom: 14
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 700,
+      color: 'var(--ta-navy)',
+      marginBottom: 8,
+      fontSize: '.9rem'
+    }
+  }, school.name), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      gap: 10
+    }
+  }, school.times.map(time => /*#__PURE__*/React.createElement("label", {
+    key: time,
+    style: timeStyle(collection.schoolVenue === school.name && collection.time === time)
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "radio",
+    name: "collectionOption",
+    checked: collection.schoolVenue === school.name && collection.time === time,
+    onChange: () => onChange({
+      ...collection,
+      schoolVenue: school.name,
+      time: time
+    }),
+    style: {
+      position: 'absolute',
+      opacity: 0,
+      width: 0,
+      height: 0
+    }
+  }), time)))))), collectionError && /*#__PURE__*/React.createElement("p", {
+    className: "ta-field-err"
+  }, " ", collectionError)), /*#__PURE__*/React.createElement("div", {
+    className: "ta-form-group",
+    style: {
+      marginBottom: 0
+    }
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "ta-label"
+  }, "Teacher's Name"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    className: "ta-ctrl",
+    value: collection.teacherName,
+    onChange: e => onChange({
+      ...collection,
+      teacherName: e.target.value
+    }),
+    placeholder: "e.g. Ms. O'Brien"
+  }))));
+}
+function OrderSummary({
+  parent,
+  venue,
+  children,
+  pricingTier,
+  paymentType
+}) {
+  if (!children.length) return null;
+  const isUpfront = paymentType === 'upfront',
+    isEB = pricingTier === 'earlyBird';
+  const dTier = isUpfront ? 'upfrontEarlyBird' : pricingTier;
+  let tot = 0,
+    mo = 0;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "ta-summary"
+  }, /*#__PURE__*/React.createElement("h2", null, "Order Summary"), /*#__PURE__*/React.createElement("div", {
+    className: "ta-sum-sec"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "ta-sum-lbl"
+  }, "Parent / Guardian"), /*#__PURE__*/React.createElement("div", {
+    className: "ta-sum-val"
+  }, parent.name || '-'), /*#__PURE__*/React.createElement("div", {
+    className: "ta-sum-val",
+    style: {
+      fontSize: '.82rem',
+      opacity: .7
+    }
+  }, parent.email, parent.phone ? ` - ${parent.phone}` : '')), /*#__PURE__*/React.createElement("div", {
+    className: "ta-sum-sec"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "ta-sum-lbl"
+  }, "Venue"), /*#__PURE__*/React.createElement("div", {
+    className: "ta-sum-val"
+  }, venue || '-')), /*#__PURE__*/React.createElement("div", {
+    className: "ta-sum-sec"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "ta-sum-lbl"
+  }, "Pricing"), /*#__PURE__*/React.createElement("div", {
+    className: "ta-sum-val"
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      background: isUpfront || isEB ? '#c9963a' : 'rgba(255,255,255,.2)',
+      color: '#fff',
+      fontSize: '.75rem',
+      fontWeight: 700,
+      padding: '2px 8px',
+      borderRadius: 20
+    }
+  }, isUpfront ? 'Pay in Full' : isEB ? 'Early Bird' : 'Standard'), isUpfront && /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: '.78rem',
+      opacity: .6,
+      marginLeft: 8
+    }
+  }, "One-time"), !isUpfront && isEB && /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: '.78rem',
+      opacity: .6,
+      marginLeft: 8
+    }
+  }, "Until 1 Aug"))), /*#__PURE__*/React.createElement("hr", {
+    className: "ta-sum-div"
+  }), children.map((child, i) => {
+    const n = i + 1,
+      isFr = n === 3,
+      price = getChildDisplayPrice(n, dTier),
+      slot = getSlotLabel(venue, child.classGroup, child.slotId);
+    if (!isFr) {
+      tot += price.total;
+      if (price.monthly !== null) mo += price.monthly;
+    }
+    return /*#__PURE__*/React.createElement("div", {
+      className: "ta-sum-child",
+      key: i
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "ta-sum-child-hdr"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "ta-sum-child-name"
+    }, child.firstName || '-', " ", child.lastName), /*#__PURE__*/React.createElement("span", {
+      className: "ta-sum-child-price"
+    }, isFr ? /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: '#86efac'
+      }
+    }, "FREE") : isUpfront ? `${price.total} euro` : `${price.monthly.toFixed(2)} euro/mo`)), /*#__PURE__*/React.createElement("div", {
+      className: "ta-sum-child-detail"
+    }, child.classGroup || '-', " - ", slot), !isFr && !isUpfront && /*#__PURE__*/React.createElement("div", {
+      className: "ta-sum-child-detail",
+      style: {
+        marginTop: 2
+      }
+    }, price.total, " euro total"));
+  }), /*#__PURE__*/React.createElement("hr", {
+    className: "ta-sum-div"
+  }), isUpfront ? /*#__PURE__*/React.createElement("div", {
+    className: "ta-sum-total-row"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "ta-sum-total-lbl"
+  }, "Total due today"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '.75rem',
+      color: 'rgba(255,255,255,.4)',
+      marginTop: 2
+    }
+  }, "One-time - full season")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "ta-sum-total-amt"
+  }, tot.toFixed(2), " euro"))) : /*#__PURE__*/React.createElement("div", {
+    className: "ta-sum-total-row"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "ta-sum-total-lbl"
+  }, "Monthly payment (", MONTHS, " payments)")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "ta-sum-total-amt"
+  }, (Math.round(mo * 100) / 100).toFixed(2), " euro"), /*#__PURE__*/React.createElement("div", {
+    className: "ta-sum-monthly-note"
+  }, "Season total: ", tot.toFixed(2), " euro"))));
+}
+function SuccessPage({
+  onBack
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "ta-result"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "ta-result-card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "ta-result-icon"
+  }), /*#__PURE__*/React.createElement("h1", null, "You're all booked!"), /*#__PURE__*/React.createElement("p", null, "Thank you for registering. Your payment was successful and your children are enrolled for the season."), /*#__PURE__*/React.createElement("p", null, "If you chose ", /*#__PURE__*/React.createElement("strong", null, "monthly payments"), ", you'll be charged for ", MONTHS, " months - your subscription ends automatically. If you ", /*#__PURE__*/React.createElement("strong", null, "paid in full"), ", nothing more to do."), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: '.875rem',
+      marginTop: 8
+    }
+  }, "A confirmation email will be sent to you shortly."), /*#__PURE__*/React.createElement("div", {
+    className: "ta-action-row"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "ta-btn ta-btn-gold",
+    onClick: onBack
+  }, "Back to Home"))));
+}
+function CancelPage({
+  onBack
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "ta-result"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "ta-result-card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "ta-result-icon"
+  }), /*#__PURE__*/React.createElement("h1", null, "Payment Cancelled"), /*#__PURE__*/React.createElement("p", null, "No payment has been taken. Your booking has not been confirmed."), /*#__PURE__*/React.createElement("p", null, "If you'd like to complete your registration, simply go back and try again."), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: '.875rem',
+      marginTop: 8
+    }
+  }, "Having trouble? ", /*#__PURE__*/React.createElement("a", {
+    href: "mailto:info@tennisacademy.ie"
+  }, "Get in touch"), " and we'll help."), /*#__PURE__*/React.createElement("div", {
+    className: "ta-action-row"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "ta-btn ta-btn-gold",
+    onClick: onBack
+  }, "Try Again"))));
+}
+function emptyChild() {
+  return {
+    firstName: '',
+    lastName: '',
+    dateOfBirth: '',
+    classGroup: '',
+    slotId: '',
+    hasMedical: '',
+    medicalNotes: '',
+    parentNotes: '',
+    howHeardAboutUs: ''
+  };
+}
+function BookingPage() {
+  const [parent, setParent] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    phone2: '',
+    address: ''
+  });
+  const [collection, setCollection] = useState({
+    wantsCollection: '',
+    schoolVenue: '',
+    time: '',
+    teacherName: ''
+  });
+  const [venue, setVenue] = useState('');
+  const [children, setChildren] = useState([emptyChild()]);
+  const [availability, setAvailability] = useState({});
+  const [loadingAvail, setLoadingAvail] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [apiErrors, setApiErrors] = useState([]);
+  const [fieldErrors, setFieldErrors] = useState({});
+  const [paymentType, setPaymentType] = useState('monthly');
+  const [page, setPage] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('ta_success') === '1') return 'success';
+    if (params.get('ta_cancelled') === '1') return 'cancel';
+    return 'form';
+  });
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('ta_success') || params.has('ta_cancelled') || params.has('session_id')) {
+      params.delete('ta_success');
+      params.delete('ta_cancelled');
+      params.delete('session_id');
+      const newUrl = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+      window.history.replaceState({}, '', newUrl);
+    }
+  }, []);
+  const pricingTier = getPricingTier();
+  const isEarlyBird = pricingTier === 'earlyBird';
+  const fetchAvailability = useCallback(async v => {
+    if (!v || !SCHEDULE[v]) {
+      setAvailability({});
+      return;
+    }
+    if (SCHEDULE[v] === null) {
+      setAvailability({
+        tbc: true
+      });
+      return;
+    }
+    setLoadingAvail(true);
+    try {
+      const res = await fetch(`${TENNIS_API_URL}/api/availability?venue=${encodeURIComponent(v)}`);
+      const data = await res.json();
+      setAvailability(data);
+    } catch {
+      setAvailability({});
+    } finally {
+      setLoadingAvail(false);
+    }
+  }, []);
+  useEffect(() => {
+    fetchAvailability(venue);
+  }, [venue, fetchAvailability]);
+  function handleVenueChange(e) {
+    setVenue(e.target.value);
+    setChildren(prev => prev.map(c => ({
+      ...c,
+      classGroup: '',
+      slotId: ''
+    })));
+    setApiErrors([]);
+  }
+  function updateChild(i, updated) {
+    setChildren(prev => prev.map((c, idx) => idx === i ? updated : c));
+  }
+  function validate() {
+    const errs = {},
+      pErrs = {};
+    if (!parent.name.trim()) pErrs.name = 'Name is required';
+    if (!parent.email.trim()) pErrs.email = 'Email is required';else if (!/\S+@\S+\.\S+/.test(parent.email)) pErrs.email = 'Enter a valid email';
+    if (!parent.phone.trim()) pErrs.phone = 'Phone number is required';
+    if (Object.keys(pErrs).length) errs.parent = pErrs;
+    if (!venue) errs.venue = 'Please select a venue';
+    const childErrs = children.map(c => {
+      const ce = {};
+      if (!c.firstName.trim()) ce.firstName = 'Required';
+      if (!c.lastName.trim()) ce.lastName = 'Required';
+      if (!c.dateOfBirth) ce.dateOfBirth = 'Required';
+      if (c.hasMedical === 'Yes' && !c.medicalNotes.trim()) ce.medicalNotes = 'Please describe the medical condition';
+      if (!c.classGroup) ce.classGroup = 'Required';
+      if (!c.slotId) ce.slotId = 'Please select a time slot';
+      if (!c.howHeardAboutUs?.trim()) ce.howHeardAboutUs = 'Required';
+      return ce;
+    });
+    if (childErrs.some(ce => Object.keys(ce).length)) errs.children = childErrs;
+    if (collection.wantsCollection === 'yes' && (!collection.schoolVenue || !collection.time)) {
+      errs.collectionOption = 'Please select a school and collection time';
+    }
+    setFieldErrors(errs);
+    return Object.keys(errs).length === 0;
+  }
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setApiErrors([]);
+    if (!validate()) {
+      const el = document.querySelector('#ta-bw .ta-err, #ta-bw .ta-field-err');
+      if (el) el.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+      });
+      return;
+    }
+    setSubmitting(true);
+    try {
+      const base = window.location.origin + window.location.pathname;
+      const successUrl = base + '?ta_success=1&session_id={CHECKOUT_SESSION_ID}';
+      const cancelUrl = base + '?ta_cancelled=1';
+      const res = await fetch(`${TENNIS_API_URL}/api/create-checkout-session`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          parent,
+          venue,
+          children,
+          paymentType,
+          collection,
+          successUrl,
+          cancelUrl
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setApiErrors(data.errors || ['Something went wrong. Please try again.']);
+        setSubmitting(false);
+        document.getElementById('ta-bw').scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+        return;
+      }
+      window.location.href = data.url;
+    } catch {
+      setApiErrors(['Network error - please check your connection and try again.']);
+      setSubmitting(false);
+    }
+  }
+  if (page === 'success') return /*#__PURE__*/React.createElement(SuccessPage, {
+    onBack: () => setPage('form')
+  });
+  if (page === 'cancel') return /*#__PURE__*/React.createElement(CancelPage, {
+    onBack: () => setPage('form')
+  });
+  const isCurragha = venue === 'Curragha';
+  const showChildren = venue && !isCurragha;
+  const hasFullSlot = children.some(c => c.slotId && (availability[c.classGroup] || {})[c.slotId]?.full);
+  const formComplete = parent.name.trim() && parent.email.trim() && parent.phone.trim() && venue && !isCurragha && children.every(c => c.firstName && c.lastName && c.dateOfBirth && c.classGroup && c.slotId && c.howHeardAboutUs?.trim());
+  const canSubmit = formComplete && !hasFullSlot && !submitting && termsAccepted;
+  const cutoffStr = EARLY_BIRD_CUTOFF_DATE.toLocaleDateString('en-IE', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  });
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("header", {
+    className: "ta-header"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "ta-container"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "ta-logo-row"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "ta-logo-icon"
+  }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", null, "Tennis Academy"), /*#__PURE__*/React.createElement("p", {
+    className: "ta-tagline"
+  }, "Registration - September to June"))))), /*#__PURE__*/React.createElement("div", {
+    className: "ta-main"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "ta-container"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "ta-pricing-banner"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: `ta-badge${isEarlyBird ? '' : ' ta-badge-std'}`
+  }, isEarlyBird ? 'Early Bird Pricing' : 'Standard Pricing'), /*#__PURE__*/React.createElement("p", null, isEarlyBird ? /*#__PURE__*/React.createElement("span", null, "Early bird rates apply until ", /*#__PURE__*/React.createElement("strong", null, cutoffStr), ". Pay upfront before August 1 for only ", /*#__PURE__*/React.createElement("strong", null, "589 euro"), " for each of the first two children and the third free, or pay over ", /*#__PURE__*/React.createElement("strong", null, "10 monthly payments"), " - ", /*#__PURE__*/React.createElement("strong", null, "615 euro"), " for the first child, ", /*#__PURE__*/React.createElement("strong", null, "600 euro"), " for the second and the third child free.") : /*#__PURE__*/React.createElement("span", null, "Standard rates apply after ", cutoffStr, ". Season fee is ", /*#__PURE__*/React.createElement("strong", null, "640 euro"), " for the first child, paid over ", /*#__PURE__*/React.createElement("strong", null, "10 monthly payments"), "."))), /*#__PURE__*/React.createElement("form", {
+    onSubmit: handleSubmit,
+    noValidate: true
+  }, apiErrors.length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "ta-alert ta-alert-err"
+  }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("div", null, apiErrors.map((err, i) => /*#__PURE__*/React.createElement("p", {
+    key: i,
+    style: {
+      margin: 0
+    }
+  }, err)))), /*#__PURE__*/React.createElement(PaymentTypeSelector, {
+    paymentType: paymentType,
+    onChange: setPaymentType,
+    pricingTier: pricingTier
+  }), /*#__PURE__*/React.createElement(ParentForm, {
+    parent: parent,
+    onChange: setParent,
+    errors: fieldErrors.parent || {}
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "ta-card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "ta-card-title"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "ta-step"
+  }, "2"), "Select Venue"), /*#__PURE__*/React.createElement("div", {
+    className: "ta-form-group",
+    style: {
+      marginBottom: 0
+    }
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "ta-label"
+  }, "Venue ", /*#__PURE__*/React.createElement("span", {
+    className: "ta-req"
+  }, "*")), /*#__PURE__*/React.createElement("select", {
+    className: `ta-ctrl${fieldErrors.venue ? ' ta-err' : ''}`,
+    value: venue,
+    onChange: handleVenueChange
+  }, /*#__PURE__*/React.createElement("option", {
+    value: ""
+  }, "- Select a venue -"), VENUES.map(v => /*#__PURE__*/React.createElement("option", {
+    key: v,
+    value: v
+  }, v))), fieldErrors.venue && /*#__PURE__*/React.createElement("p", {
+    className: "ta-field-err"
+  }, " ", fieldErrors.venue)), isCurragha && /*#__PURE__*/React.createElement("div", {
+    className: "ta-venue-tbc"
+  }, /*#__PURE__*/React.createElement("h3", null, "Schedule Coming Soon"), /*#__PURE__*/React.createElement("p", null, "The Curragha schedule is yet to be confirmed.", /*#__PURE__*/React.createElement("br", null), "Please check back soon or ", /*#__PURE__*/React.createElement("a", {
+    href: "mailto:info@tennisacademy.ie"
+  }, "get in touch"), " to register your interest.")), loadingAvail && /*#__PURE__*/React.createElement("p", {
+    style: {
+      marginTop: 12,
+      color: 'var(--ta-grey-400)',
+      fontSize: '.875rem'
+    }
+  }, "Checking availability...")), showChildren && /*#__PURE__*/React.createElement("div", {
+    className: "ta-card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "ta-card-title"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "ta-step"
+  }, "3"), "Children", children.length < 3 && /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: '.78rem',
+      fontWeight: 400,
+      color: 'var(--ta-grey-400)',
+      marginLeft: 6
+    }
+  }, "(up to 3 - 3rd child is free)")), children.map((child, i) => {
+    const n = i + 1;
+    const isFr = n === 3;
+    const displayTier = paymentType === 'upfront' ? 'upfrontEarlyBird' : pricingTier;
+    const dp = isFr ? {
+      total: 0,
+      monthly: null
+    } : getChildDisplayPrice(n, displayTier);
+    return /*#__PURE__*/React.createElement(ChildForm, {
+      key: i,
+      index: i,
+      child: child,
+      venue: venue,
+      availability: availability,
+      pricingTier: pricingTier,
+      displayPrice: dp,
+      onChange: updated => updateChild(i, updated),
+      onRemove: () => setChildren(prev => prev.filter((_, idx) => idx !== i)),
+      errors: (fieldErrors.children || [])[i] || {},
+      canRemove: children.length > 1
+    });
+  }), children.length < 3 && /*#__PURE__*/React.createElement("div", {
+    className: "ta-add-child-row"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "ta-btn ta-btn-outline",
+    onClick: () => setChildren(prev => [...prev, emptyChild()])
+  }, "+ Add Another Child", children.length === 2 && /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: '.78rem',
+      marginLeft: 4,
+      opacity: .7
+    }
+  }, "(3rd child is free!)")))), showChildren && /*#__PURE__*/React.createElement(CollectionSection, {
+    collection: collection,
+    onChange: setCollection,
+    collectionError: fieldErrors.collectionOption
+  }), formComplete && !hasFullSlot && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(OrderSummary, {
+    parent: parent,
+    venue: venue,
+    children: children,
+    pricingTier: pricingTier,
+    paymentType: paymentType
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: 12
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "ta-alert ta-alert-info"
+  }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null, "You'll be taken to ", /*#__PURE__*/React.createElement("strong", null, "Stripe's secure checkout"), " to complete payment. Your card details are never stored on our servers.", paymentType === 'upfront' ? /*#__PURE__*/React.createElement(React.Fragment, null, " You'll be charged ", /*#__PURE__*/React.createElement("strong", null, "once"), " for the full season.") : /*#__PURE__*/React.createElement(React.Fragment, null, " You'll be charged monthly for ", /*#__PURE__*/React.createElement("strong", null, MONTHS, " months"), ".")))), /*#__PURE__*/React.createElement("label", {
+    style: {
+      display: 'flex',
+      alignItems: 'flex-start',
+      gap: 10,
+      cursor: 'pointer',
+      marginBottom: 14,
+      fontSize: '.875rem',
+      color: 'var(--ta-grey-600)',
+      lineHeight: 1.4
+    }
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "checkbox",
+    checked: termsAccepted,
+    onChange: e => setTermsAccepted(e.target.checked),
+    style: {
+      marginTop: 2,
+      flexShrink: 0,
+      width: 16,
+      height: 16,
+      accentColor: 'var(--ta-navy)',
+      cursor: 'pointer'
+    }
+  }), "By registering and making payment you are accepting the Terms & Conditions on our website."), /*#__PURE__*/React.createElement("button", {
+    type: "submit",
+    className: "ta-btn ta-btn-gold ta-btn-lg ta-btn-full",
+    disabled: !canSubmit
+  }, submitting ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
+    className: "ta-spin"
+  }), "\xA0Redirecting to payment...") : /*#__PURE__*/React.createElement(React.Fragment, null, "Proceed to Secure Payment >"))), !formComplete && venue && !isCurragha && /*#__PURE__*/React.createElement("p", {
+    style: {
+      textAlign: 'center',
+      color: 'var(--ta-grey-400)',
+      fontSize: '.875rem',
+      marginTop: 12
+    }
+  }, "Complete all required fields above to see your order summary and payment button.")))), /*#__PURE__*/React.createElement("footer", {
+    className: "ta-footer"
+  }, /*#__PURE__*/React.createElement("p", null, "Tennis Academy \xA9 ", new Date().getFullYear(), " - 10-month season - September to June"), new URLSearchParams(window.location.search).get('admin') === '1' && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 12
+    }
+  }, /*#__PURE__*/React.createElement("a", {
+    href: `${TENNIS_API_URL}/api/admin/export?key=${ADMIN_SECRET}`,
+    style: {
+      background: '#c9963a',
+      color: '#fff',
+      padding: '8px 18px',
+      borderRadius: 6,
+      fontSize: '.8rem',
+      fontWeight: 700,
+      textDecoration: 'none'
+    }
+  }, "Export Bookings CSV"))));
+}
+function mountApp() {
+  const el = document.getElementById('ta-root');
+  if (el) ReactDOM.createRoot(el).render(/*#__PURE__*/React.createElement(BookingPage, null));
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', mountApp);
+} else {
+  mountApp();
+}
+</script>
