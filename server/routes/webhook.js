@@ -26,6 +26,26 @@ const BOOKINGS_PATH = process.env.NODE_ENV === 'production'
   ? '/data/bookings.json'
   : path.join(__dirname, '../data/bookings.json');
 
+const PROCESSED_EVENTS_PATH = process.env.NODE_ENV === 'production'
+  ? '/data/processed-events.json'
+  : path.join(__dirname, '../data/processed-events.json');
+
+function hasProcessedEvent(eventId) {
+  try {
+    const ids = JSON.parse(fs.readFileSync(PROCESSED_EVENTS_PATH, 'utf8'));
+    return ids.includes(eventId);
+  } catch {
+    return false;
+  }
+}
+
+function markEventProcessed(eventId) {
+  let ids = [];
+  try { ids = JSON.parse(fs.readFileSync(PROCESSED_EVENTS_PATH, 'utf8')); } catch {}
+  ids.push(eventId);
+  fs.writeFileSync(PROCESSED_EVENTS_PATH, JSON.stringify(ids), 'utf8');
+}
+
 function readBookings() {
   try {
     return JSON.parse(fs.readFileSync(BOOKINGS_PATH, 'utf8'));
@@ -122,6 +142,12 @@ router.post('/', async (req, res) => {
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
     const metadata = session.metadata || {};
+
+    if (hasProcessedEvent(event.id)) {
+      console.log(`⚠ Duplicate webhook ignored: ${event.id}`);
+      return res.json({ received: true });
+    }
+    markEventProcessed(event.id);
 
     console.log(`✓ Checkout completed: ${session.id}`);
     console.log(`  Parent: ${metadata.parent_name} (${metadata.parent_email})`);
