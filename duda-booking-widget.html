@@ -537,9 +537,8 @@ function ChildForm({
   }, "*")), /*#__PURE__*/React.createElement("div", {
     style: { display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }
   }, (() => {
-    const parts = (child.dateOfBirth || '').split('/');
-    const dd = parts[0] || '', mm = parts[1] || '', yyyy = parts[2] || '';
-    const update = (d, m, y) => onChange({ ...child, dateOfBirth: (d && m && y) ? `${d}/${m}/${y}` : '' });
+    const dd = child.dobDay || '', mm = child.dobMonth || '', yyyy = child.dobYear || '';
+    const update = (d, m, y) => onChange({ ...child, dobDay: d, dobMonth: m, dobYear: y, dateOfBirth: (d && m && y) ? `${d}/${m}/${y}` : '' });
     const days = Array.from({ length: 31 }, (_, i) => String(i + 1).padStart(2, '0'));
     const months = [['01','January'],['02','February'],['03','March'],['04','April'],['05','May'],['06','June'],['07','July'],['08','August'],['09','September'],['10','October'],['11','November'],['12','December']];
     const years = Array.from({ length: 20 }, (_, i) => String(new Date().getFullYear() - 3 - i));
