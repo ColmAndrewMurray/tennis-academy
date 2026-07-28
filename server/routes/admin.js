@@ -53,8 +53,9 @@ router.get('/export', async (req, res) => {
       const monthly = (Number(m.monthly_total_cents || 0) / 100).toFixed(2);
       const total   = (Number(m.order_total_cents   || 0) / 100).toFixed(2);
 
-      const medicalNotes     = [1, 2, 3].map(n => m[`child${n}_medical`]).filter(Boolean).join('; ');
-      const additionalNotes  = [1, 2, 3].map(n => m[`child${n}_notes`]).filter(Boolean).join('; ');
+      const noteWithChild = (n, note) => `${m[`child${n}_name`] || `Child ${n}`}: ${note}`;
+      const medicalNotes     = [1, 2, 3].map(n => m[`child${n}_medical`] && noteWithChild(n, m[`child${n}_medical`])).filter(Boolean).join('; ');
+      const additionalNotes  = [1, 2, 3].map(n => m[`child${n}_notes`] && noteWithChild(n, m[`child${n}_notes`])).filter(Boolean).join('; ');
       const howHeard         = [1, 2, 3].map(n => m[`child${n}_how_heard`]).filter(Boolean)[0] || '';
 
       return [
