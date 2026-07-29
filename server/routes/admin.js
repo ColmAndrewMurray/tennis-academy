@@ -1,6 +1,7 @@
 /**
  * GET  /api/admin/export?key=ADMIN_SECRET  — download bookings CSV
  * POST /api/admin/reset-bookings?key=ADMIN_SECRET — zero out all slot counts
+ * POST /api/admin/set-slot-count?key=ADMIN_SECRET — correct a single slot's booked count
  */
 
 const express = require('express');
@@ -119,6 +120,37 @@ router.post('/reset-bookings', (req, res) => {
   } catch (err) {
     console.error('Reset bookings error:', err.message);
     res.status(500).json({ error: 'Failed to reset bookings' });
+  }
+});
+
+// POST /api/admin/set-slot-count?key=ADMIN_SECRET
+// body: { venue, classGroup, slotId, count }
+router.post('/set-slot-count', (req, res) => {
+  if (!process.env.ADMIN_SECRET || req.query.key !== process.env.ADMIN_SECRET) {
+    return res.status(401).json({ error: 'Unauthorised' });
+  }
+
+  const { venue, classGroup, slotId, count } = req.body || {};
+  if (!venue || !classGroup || !slotId || !Number.isInteger(count) || count < 0) {
+    return res.status(400).json({ error: 'venue, classGroup, slotId and a non-negative integer count are required' });
+  }
+
+  try {
+    let bookings = {};
+    try { bookings = JSON.parse(fs.readFileSync(BOOKINGS_PATH, 'utf8')); } catch {}
+
+    if (!bookings[venue])             bookings[venue]             = {};
+    if (!bookings[venue][classGroup]) bookings[venue][classGroup] = {};
+    const previous = bookings[venue][classGroup][slotId] || 0;
+    bookings[venue][classGroup][slotId] = count;
+
+    fs.mkdirSync(path.dirname(BOOKINGS_PATH), { recursive: true });
+    fs.writeFileSync(BOOKINGS_PATH, JSON.stringify(bookings, null, 2), 'utf8');
+    console.log(`Slot count corrected by admin: ${venue}/${classGroup}/${slotId} ${previous} -> ${count}`);
+    res.json({ ok: true, venue, classGroup, slotId, previous, count });
+  } catch (err) {
+    console.error('Set slot count error:', err.message);
+    res.status(500).json({ error: 'Failed to update slot count' });
   }
 });
 
