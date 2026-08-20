@@ -61,7 +61,7 @@ const SCHEDULE = {
       { id: 'clontarf-12-mon', day: 'Monday',    time: '2:30 PM – 3:15 PM' },
       { id: 'clontarf-12-tue', day: 'Tuesday',   time: '2:30 PM – 3:15 PM' },
       { id: 'clontarf-12-wed', day: 'Wednesday', time: '2:30 PM – 3:15 PM' },
-      { id: 'clontarf-12-fri', day: 'Friday',    time: '2:30 PM – 3:15 PM' },
+      { id: 'clontarf-12-fri', day: 'Friday',    time: '2:30 PM – 3:15 PM', capacity: 13 },
     ],
     'Third and Fourth Class': [
       // TODO: Original Monday slot may have been 2:15 PM – 4:15 PM.
