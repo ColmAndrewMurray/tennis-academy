@@ -53,7 +53,7 @@ const SCHEDULE = {
   Clontarf: {
     'Junior and Senior Infants': [
       { id: 'clontarf-jsi-mon', day: 'Monday',    time: '1:30 PM – 2:15 PM' },
-      { id: 'clontarf-jsi-tue', day: 'Tuesday',   time: '1:30 PM – 2:15 PM' },
+      { id: 'clontarf-jsi-tue', day: 'Tuesday',   time: '1:30 PM – 2:15 PM', capacity: 11 },
       { id: 'clontarf-jsi-wed', day: 'Wednesday', time: '1:30 PM – 2:15 PM' },
       { id: 'clontarf-jsi-fri', day: 'Friday',    time: '1:40 PM – 2:25 PM' },
     ],
