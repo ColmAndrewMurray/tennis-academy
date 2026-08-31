@@ -58,8 +58,8 @@ const SCHEDULE = {
       { id: 'clontarf-jsi-fri', day: 'Friday',    time: '1:40 PM – 2:25 PM' },
     ],
     'First and Second Class': [
-      { id: 'clontarf-12-mon', day: 'Monday',    time: '2:30 PM – 3:15 PM' },
-      { id: 'clontarf-12-tue', day: 'Tuesday',   time: '2:30 PM – 3:15 PM' },
+      { id: 'clontarf-12-mon', day: 'Monday',    time: '2:30 PM – 3:15 PM', capacity: 13 },
+      { id: 'clontarf-12-tue', day: 'Tuesday',   time: '2:30 PM – 3:15 PM', capacity: 13 },
       { id: 'clontarf-12-wed', day: 'Wednesday', time: '2:30 PM – 3:15 PM' },
       { id: 'clontarf-12-fri', day: 'Friday',    time: '2:30 PM – 3:15 PM', capacity: 13 },
     ],
@@ -73,10 +73,10 @@ const SCHEDULE = {
       { id: 'clontarf-34-fri', day: 'Friday',    time: '3:15 PM – 4:15 PM' },
     ],
     'Fifth and Sixth Class': [
-      { id: 'clontarf-56-mon', day: 'Monday',    time: '4:15 PM – 5:15 PM' },
-      { id: 'clontarf-56-tue', day: 'Tuesday',   time: '4:15 PM – 5:15 PM', capacity: 12 },
-      { id: 'clontarf-56-wed', day: 'Wednesday', time: '4:15 PM – 5:15 PM' },
-      { id: 'clontarf-56-fri', day: 'Friday',    time: '4:15 PM – 5:15 PM' },
+      { id: 'clontarf-56-mon', day: 'Monday',    time: '4:15 PM – 5:15 PM', capacity: 10 },
+      { id: 'clontarf-56-tue', day: 'Tuesday',   time: '4:15 PM – 5:15 PM', capacity: 10 },
+      { id: 'clontarf-56-wed', day: 'Wednesday', time: '4:15 PM – 5:15 PM', capacity: 10 },
+      { id: 'clontarf-56-fri', day: 'Friday',    time: '4:15 PM – 5:15 PM', capacity: 10 },
     ],
   },
   Currenagh: null, // Schedule to be confirmed — shows message to user
