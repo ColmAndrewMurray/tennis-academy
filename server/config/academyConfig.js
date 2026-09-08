@@ -55,27 +55,27 @@ const SCHEDULE = {
       { id: 'clontarf-jsi-mon', day: 'Monday',    time: '1:30 PM – 2:15 PM' },
       { id: 'clontarf-jsi-tue', day: 'Tuesday',   time: '1:30 PM – 2:15 PM', capacity: 11 },
       { id: 'clontarf-jsi-wed', day: 'Wednesday', time: '1:30 PM – 2:15 PM' },
-      { id: 'clontarf-jsi-fri', day: 'Friday',    time: '1:40 PM – 2:25 PM' },
+      { id: 'clontarf-jsi-fri', day: 'Friday',    time: '1:40 PM – 2:25 PM', capacity: 9 },
     ],
     'First and Second Class': [
       { id: 'clontarf-12-mon', day: 'Monday',    time: '2:30 PM – 3:15 PM', capacity: 13 },
       { id: 'clontarf-12-tue', day: 'Tuesday',   time: '2:30 PM – 3:15 PM', capacity: 13 },
-      { id: 'clontarf-12-wed', day: 'Wednesday', time: '2:30 PM – 3:15 PM' },
-      { id: 'clontarf-12-fri', day: 'Friday',    time: '2:30 PM – 3:15 PM', capacity: 13 },
+      { id: 'clontarf-12-wed', day: 'Wednesday', time: '2:30 PM – 3:15 PM', capacity: 6 },
+      { id: 'clontarf-12-fri', day: 'Friday',    time: '2:30 PM – 3:15 PM', capacity: 14 },
     ],
     'Third and Fourth Class': [
       // TODO: Original Monday slot may have been 2:15 PM – 4:15 PM.
       // Built as 3:15 PM – 4:15 PM for consistency with other days.
       // Verify with academy before going live and update the id/time here.
       { id: 'clontarf-34-mon', day: 'Monday',    time: '3:15 PM – 4:15 PM' },
-      { id: 'clontarf-34-tue', day: 'Tuesday',   time: '3:15 PM – 4:15 PM' },
-      { id: 'clontarf-34-wed', day: 'Wednesday', time: '3:15 PM – 4:15 PM' },
-      { id: 'clontarf-34-fri', day: 'Friday',    time: '3:15 PM – 4:15 PM' },
+      { id: 'clontarf-34-tue', day: 'Tuesday',   time: '3:15 PM – 4:15 PM', capacity: 6 },
+      { id: 'clontarf-34-wed', day: 'Wednesday', time: '3:15 PM – 4:15 PM', capacity: 9 },
+      { id: 'clontarf-34-fri', day: 'Friday',    time: '3:15 PM – 4:15 PM', capacity: 4 },
     ],
     'Fifth and Sixth Class': [
       { id: 'clontarf-56-mon', day: 'Monday',    time: '4:15 PM – 5:15 PM', capacity: 10 },
-      { id: 'clontarf-56-tue', day: 'Tuesday',   time: '4:15 PM – 5:15 PM', capacity: 10 },
-      { id: 'clontarf-56-wed', day: 'Wednesday', time: '4:15 PM – 5:15 PM', capacity: 10 },
+      { id: 'clontarf-56-tue', day: 'Tuesday',   time: '4:15 PM – 5:15 PM', capacity: 7 },
+      { id: 'clontarf-56-wed', day: 'Wednesday', time: '4:15 PM – 5:15 PM', capacity: 8 },
       { id: 'clontarf-56-fri', day: 'Friday',    time: '4:15 PM – 5:15 PM', capacity: 10 },
     ],
   },
